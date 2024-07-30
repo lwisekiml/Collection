@@ -19,7 +19,7 @@ public class AuthenticationManagerConfig extends AbstractHttpConfigurer<Authenti
     public void configure(HttpSecurity builder) throws Exception {
         AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
-        // 에서 빨간 네모 부분(AuthenticationFilter, AuthenticationManager, AuthenticationProvider 만듬)
+        // spring_security.png 에서 빨간 네모 부분(AuthenticationFilter, AuthenticationManager, AuthenticationProvider 만듬)
         builder.addFilterBefore(
                         new JwtAuthenticationFilter(authenticationManager),
                         UsernamePasswordAuthenticationFilter.class)

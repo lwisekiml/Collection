@@ -71,14 +71,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private void getAuthentication(String token) {
-        // 에서 주황 네모 부분(JwtAuthenticationToken(token)은 UsernamePasswordAuthenticationToken 부분이다.)
+        // spring_security.png 에서 주황 네모 부분(JwtAuthenticationToken(token)은 UsernamePasswordAuthenticationToken 부분이다.)
         JwtAuthenticationToken authenticationToken = new JwtAuthenticationToken(token);
         // AuthenticationManager한테 토큰을 던져줌
         // 던저 주면 검증을 사용하게 되는데 이 때
         // AuthenticationManagerConfig - configure에 있는 jwtAuthenticationProvider가 동작하게 된다.
         // Manager는 내부적으로 Provider를 사용하면서 authenticationToken 값을 넣어준다.
         authenticationManager.authenticate(authenticationToken);
-        // 에서 10번 부분
+        // spring_security.png 에서 10번 부분
         SecurityContextHolder.getContext()
                 .setAuthentication(authenticationToken);
         // 여기까지가 JWT 토큰이 올바른지 검증(인증) 부분
