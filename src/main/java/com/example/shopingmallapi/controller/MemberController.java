@@ -1,12 +1,15 @@
 package com.example.shopingmallapi.controller;
 
 import com.example.shopingmallapi.domain.Member;
+import com.example.shopingmallapi.domain.RefreshToken;
+import com.example.shopingmallapi.domain.Role;
 import com.example.shopingmallapi.dto.MemberLoginDto;
 import com.example.shopingmallapi.dto.MemberLoginResponseDto;
 import com.example.shopingmallapi.dto.MemberSignupDto;
 import com.example.shopingmallapi.dto.MemberSignupResponseDto;
 import com.example.shopingmallapi.security.jwt.util.JwtTokenizer;
 import com.example.shopingmallapi.service.MemberService;
+import com.example.shopingmallapi.service.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,6 +29,7 @@ public class MemberController {
 
     private final JwtTokenizer jwtTokenizer;
     private final MemberService memberService;
+    private final RefreshTokenService refreshTokenService;
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/signup")
@@ -51,22 +56,33 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid MemberLoginDto loginDto) {
+    public ResponseEntity login(@RequestBody @Valid MemberLoginDto loginDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
 
-        // TODO email에 해당하는 사용자 정보를 읽어와서 암호가 맞는지 검사하는 코드가 있어야 한다.
-        Long memberId = 1L;
-        String email = loginDto.getEmail();
-        List<String> roles = List.of("ROLE_USER");
+        // email이 없을 경우 Exception 발생. Global Exception 처리 필요
+        Member member = memberService.findByEmail(loginDto.getEmail());
+        if (!passwordEncoder.matches(loginDto.getPassword(), member.getPassword())) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+        List<String> roles = member.getRoles().stream().map(Role::getName).collect(Collectors.toList());
 
         // JWT토큰을 생성하였다. jwt라이브러리를 이용하여 생성.
-        String accessToken = jwtTokenizer.createAccessToken(memberId, email, roles);
-        String refreshToken = jwtTokenizer.createRefreshToken(memberId, email, roles);
+        String accessToken = jwtTokenizer.createAccessToken(member.getMemberId(), member.getEmail(), roles);
+        String refreshToken = jwtTokenizer.createRefreshToken(member.getMemberId(), member.getEmail(), roles);
+
+        // RefreshToken은 성능때문에 Redis에 저장하는 것이 좋다.
+        RefreshToken refreshTokenEntity = new RefreshToken();
+        refreshTokenEntity.setValue(refreshToken);
+        refreshTokenEntity.setMemberId(member.getMemberId());
+        refreshTokenService.addRefreshToken(refreshTokenEntity);
 
         MemberLoginResponseDto loginResponse = MemberLoginResponseDto.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
-                .memberId(memberId)
-                .nickname("nickname")
+                .memberId(member.getMemberId())
+                .nickname(member.getName())
                 .build();
         return new ResponseEntity(loginResponse, HttpStatus.OK);
     }

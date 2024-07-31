@@ -16,6 +16,11 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final RoleRepository roleRepository;
 
+    @Transactional(readOnly = true)
+    public Member findByEmail(String email) {
+        return memberRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다."));
+    }
+
     @Transactional
     public Member addMember(Member member) {
         Optional<Role> userRole = roleRepository.findByName("ROLE_USER");
