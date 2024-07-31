@@ -20,6 +20,11 @@ public class Role {
     @Column(length = 20)
     private String name;
 
+    // DataInit을 위함
+    public Role(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         return "Role{" +
