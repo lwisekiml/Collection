@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -77,10 +78,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // 던저 주면 검증을 사용하게 되는데 이 때
         // AuthenticationManagerConfig - configure에 있는 jwtAuthenticationProvider가 동작하게 된다.
         // Manager는 내부적으로 Provider를 사용하면서 authenticationToken 값을 넣어준다.
-        authenticationManager.authenticate(authenticationToken);
+        Authentication authenticate = authenticationManager.authenticate(authenticationToken);
         // spring_security.png 에서 10번 부분
         SecurityContextHolder.getContext()
-                .setAuthentication(authenticationToken);
+                .setAuthentication(authenticate);
         // 여기까지가 JWT 토큰이 올바른지 검증(인증) 부분
     }
 
