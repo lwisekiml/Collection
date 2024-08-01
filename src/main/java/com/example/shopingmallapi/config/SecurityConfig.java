@@ -36,10 +36,10 @@ public class SecurityConfig {
                 .httpBasic().disable()
                 .authorizeRequests() // 인증이 왔을 때 어떻게 처리할 것인가
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll() // Preflight 요청은 허용(사전요청)
-                .mvcMatchers("/signup", "/login", "/users/refresh").permitAll() // "/signup", "/login", "/users/refresh" 페이지는 권한 유무에 관계없이 다 호출 가능
-                .mvcMatchers(GET, "/**").hasAnyRole("USER", "MANAGER", "ADMIN") // 나머지 GET, POST 방식은 "USER", "MANAGER", "ADMIN" 권한이 있어야 호출 가능
-                .mvcMatchers(POST, "/**").hasAnyRole("USER", "MANAGER", "ADMIN")
-                .anyRequest().hasAnyRole()
+                .mvcMatchers("/members/signup", "/members/login", "/users/refresh").permitAll() // "/signup", "/login", "/users/refresh" 페이지는 권한 유무에 관계없이 다 호출 가능
+                .mvcMatchers(GET, "/**").hasAnyRole("USER", "ADMIN") // 나머지 GET, POST 방식은 "USER", "MANAGER", "ADMIN" 권한이 있어야 호출 가능
+                .mvcMatchers(POST, "/**").hasAnyRole("USER", "ADMIN")
+                .anyRequest().hasAnyRole("USER", "ADMIN")
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(customAuthenticationEntryPoint) // exception이 발생 했을 경우 customAuthenticationEntryPoint 에 있는 것으로 처리

@@ -3,10 +3,7 @@ package com.example.shopingmallapi.controller;
 import com.example.shopingmallapi.domain.Member;
 import com.example.shopingmallapi.domain.RefreshToken;
 import com.example.shopingmallapi.domain.Role;
-import com.example.shopingmallapi.dto.MemberLoginDto;
-import com.example.shopingmallapi.dto.MemberLoginResponseDto;
-import com.example.shopingmallapi.dto.MemberSignupDto;
-import com.example.shopingmallapi.dto.MemberSignupResponseDto;
+import com.example.shopingmallapi.dto.*;
 import com.example.shopingmallapi.security.jwt.util.JwtTokenizer;
 import com.example.shopingmallapi.service.MemberService;
 import com.example.shopingmallapi.service.RefreshTokenService;
@@ -25,6 +22,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @Validated
+@RequestMapping("/members")
 public class MemberController {
 
     private final JwtTokenizer jwtTokenizer;
@@ -88,8 +86,8 @@ public class MemberController {
     }
 
     @DeleteMapping("/logout")
-    public ResponseEntity logout(@RequestHeader("Authorization") String token) {
-        // token repository에서 refresh Token에 해당하는 값을 삭제한다.
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    public ResponseEntity logout(@RequestBody RefreshTokenDto refreshTokenDto) {
+        refreshTokenService.deleteRefreshToken(refreshTokenDto.getRefreshToken());
+        return new ResponseEntity(HttpStatus.OK);
     }
 }
