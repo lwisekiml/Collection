@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class RefreshTokenService {
@@ -19,5 +21,10 @@ public class RefreshTokenService {
     @Transactional
     public void deleteRefreshToken(String refreshToken) {
         refreshTokenRepository.findByValue(refreshToken).ifPresent(refreshTokenRepository::delete);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<RefreshToken> findRefreshToken(String refreshToken) {
+        return refreshTokenRepository.findByValue(refreshToken);
     }
 }

@@ -7,6 +7,7 @@ import com.example.shopingmallapi.dto.*;
 import com.example.shopingmallapi.security.jwt.util.JwtTokenizer;
 import com.example.shopingmallapi.service.MemberService;
 import com.example.shopingmallapi.service.RefreshTokenService;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -89,5 +90,28 @@ public class MemberController {
     public ResponseEntity logout(@RequestBody RefreshTokenDto refreshTokenDto) {
         refreshTokenService.deleteRefreshToken(refreshTokenDto.getRefreshToken());
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PostMapping("/refreshToken")
+    public ResponseEntity requestRefreshToken(@RequestBody RefreshTokenDto refreshTokenDto) {
+        RefreshToken refreshToken = refreshTokenService.findRefreshToken(refreshTokenDto.getRefreshToken()).orElseThrow(() -> new IllegalArgumentException("Refresh token not found"));
+        Claims claims = jwtTokenizer.parseRefreshToken(refreshToken.getValue());
+
+        Long userId = Long.valueOf((Integer) claims.get("userId"));
+
+        Member member = memberService.getMember(userId).orElseThrow(() -> new IllegalArgumentException("Member not found"));
+
+        List roles = (List) claims.get("roles");
+        String email = claims.getSubject();
+
+        String accessToken = jwtTokenizer.createAccessToken(userId, email, roles);
+
+        MemberLoginResponseDto loginResponse = MemberLoginResponseDto.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshTokenDto.getRefreshToken())
+                .memberId(member.getMemberId())
+                .nickname(member.getName())
+                .build();
+        return new ResponseEntity(loginResponse, HttpStatus.OK);
     }
 }

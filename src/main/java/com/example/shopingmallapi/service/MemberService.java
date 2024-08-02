@@ -27,4 +27,9 @@ public class MemberService {
         member.addRole(userRole.get());
         return memberRepository.save(member);
     }
+
+    @Transactional(readOnly = true)
+    public Optional<Member> getMember(Long memberId){
+        return memberRepository.findById(memberId);
+    }
 }
