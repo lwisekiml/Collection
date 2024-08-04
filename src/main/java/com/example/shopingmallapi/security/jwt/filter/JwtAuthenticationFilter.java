@@ -81,7 +81,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
         // spring_security.png 에서 10번 부분
         SecurityContextHolder.getContext()
-                .setAuthentication(authenticate);
+                .setAuthentication(authenticate); // 현재 요청에서 언제든지 인증정보를 꺼낼 수 있도록 해준다.
         // 여기까지가 JWT 토큰이 올바른지 검증(인증) 부분
     }
 
