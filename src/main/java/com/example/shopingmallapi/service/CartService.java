@@ -18,8 +18,8 @@ public class CartService {
             Cart newCart = new Cart();
             newCart.setMemberId(memberId);
             newCart.setDate(date);
-            Cart savedCart = cartRepository.save(newCart);
-            return savedCart;
+            Cart saveCart = cartRepository.save(newCart);
+            return saveCart;
         } else {
             return cart.get();
         }
