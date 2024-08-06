@@ -1,13 +1,13 @@
 package com.example.shopingmallapi;
 
-import com.example.shopingmallapi.domain.Category;
-import com.example.shopingmallapi.domain.Product;
-import com.example.shopingmallapi.domain.Rating;
-import com.example.shopingmallapi.domain.Role;
+import com.example.shopingmallapi.domain.*;
 import com.example.shopingmallapi.repository.CategoryRepository;
+import com.example.shopingmallapi.repository.MemberRepository;
 import com.example.shopingmallapi.repository.ProductRepository;
 import com.example.shopingmallapi.repository.RoleRepository;
+import com.example.shopingmallapi.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -19,6 +19,8 @@ public class DataInit {
     private final RoleRepository roleRepository;
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
+    private final MemberService memberService;
+    private final PasswordEncoder passwordEncoder;
 
     @PostConstruct
     public void init() {
@@ -40,5 +42,15 @@ public class DataInit {
         productRepository.save(new Product(2L, "면 스랙스", 25000.0, "면 소재의 슬랙스", categoryRepository.findById(2L).get(), "https://via.placeholder.com/400x600", new Rating(4.5, 60)));
         productRepository.save(new Product(3L, "가디건", 40000.0, "편안한 가디건", categoryRepository.findById(3L).get(), "https://via.placeholder.com/400x600", new Rating(4.0, 40)));
         productRepository.save(new Product(4L, "로퍼", 80000.0, "멋스러운 로퍼", categoryRepository.findById(4L).get(), "https://via.placeholder.com/400x600", new Rating(4.6, 70)));
+
+        Member member = new Member();
+        member.setName("테스트용");
+        member.setEmail("test@example.com");
+        member.setPassword(passwordEncoder.encode("test1234!@#"));
+        member.setBirthDay(11);
+        member.setBirthMonth(7);
+        member.setBirthYear(2024);
+        member.setGender("M");
+        memberService.addMember(member);
     }
 }
