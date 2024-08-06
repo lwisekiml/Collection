@@ -1,5 +1,6 @@
 package com.example.shopingmallapi.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,17 +21,30 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
-    @Column(length = 255)
+    @Column(length = 255, unique = true)
     private String email;
 
     @Column(length = 50)
     private String name;
 
+    @JsonIgnore
     @Column(length = 500)
     private String password;
 
     @CreationTimestamp
     private LocalDateTime regdate;
+
+    @Column(nullable = false)
+    private Integer birthYear;
+
+    @Column(nullable = false)
+    private Integer birthMonth;
+
+    @Column(nullable = false)
+    private Integer birthDay;
+
+    @Column(length = 10, nullable = false)
+    private String gender;
 
     @ManyToMany
     @JoinTable(name = "member_role",
@@ -47,6 +61,10 @@ public class Member {
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
                 ", regdate=" + regdate +
+                ", birthYear=" + birthYear +
+                ", birthMonth=" + birthMonth +
+                ", birthDay=" + birthDay +
+                ", gender='" + gender + '\'' +
                 '}';
     }
 

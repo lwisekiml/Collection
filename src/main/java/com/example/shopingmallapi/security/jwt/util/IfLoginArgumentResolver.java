@@ -1,6 +1,5 @@
 package com.example.shopingmallapi.security.jwt.util;
 
-import com.example.shopingmallapi.dto.LoginUserDto;
 import com.example.shopingmallapi.security.jwt.token.JwtAuthenticationToken;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.Authentication;
@@ -34,6 +33,7 @@ public class IfLoginArgumentResolver implements HandlerMethodArgumentResolver {
         } catch (Exception e) {
             return null;
         }
+
         // 아직 login을 안한 상태이면 addCart의 loginUserDto 값이 null이 된다.
         if (authentication == null) {
             return null;
@@ -45,7 +45,12 @@ public class IfLoginArgumentResolver implements HandlerMethodArgumentResolver {
         if (principal == null) {
             return null;
         }
-        loginUserDto.setEmail((String) principal);
+
+        LoginInfoDto loginInfoDto = (LoginInfoDto) principal;
+        loginUserDto.setEmail(loginInfoDto.getEmail());
+        loginUserDto.setMemberId(loginInfoDto.getMemberId());
+        loginUserDto.setName(loginInfoDto.getName());
+
         System.out.println("loginUserDto.getEmail() = " + loginUserDto.getEmail());
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
