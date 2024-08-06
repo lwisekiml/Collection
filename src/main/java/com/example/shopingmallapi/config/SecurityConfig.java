@@ -37,6 +37,7 @@ public class SecurityConfig {
                 .authorizeRequests() // 인증이 왔을 때 어떻게 처리할 것인가
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll() // Preflight 요청은 허용(사전요청)
                 .mvcMatchers("/members/signup", "/members/login", "/members/refreshToken").permitAll() // "/signup", "/login", "/users/refresh" 페이지는 권한 유무에 관계없이 다 호출 가능
+                .mvcMatchers(GET, "/categories/**", "/products/**").permitAll()
                 .mvcMatchers(GET, "/**").hasAnyRole("USER", "ADMIN") // 나머지 GET, POST 방식은 "USER", "MANAGER", "ADMIN" 권한이 있어야 호출 가능
                 .mvcMatchers(POST, "/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest().hasAnyRole("USER", "ADMIN")

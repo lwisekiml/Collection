@@ -2,7 +2,7 @@ package com.example.shopingmallapi.controller;
 
 import com.example.shopingmallapi.domain.Cart;
 import com.example.shopingmallapi.domain.Member;
-import com.example.shopingmallapi.dto.LoginUserDto;
+import com.example.shopingmallapi.security.jwt.util.LoginUserDto;
 import com.example.shopingmallapi.security.jwt.util.IfLogin;
 import com.example.shopingmallapi.service.CartService;
 import com.example.shopingmallapi.service.MemberService;
