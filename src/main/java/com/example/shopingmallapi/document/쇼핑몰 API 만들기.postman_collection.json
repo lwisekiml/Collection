@@ -1,0 +1,333 @@
+{
+	"info": {
+		"_postman_id": "89c60b67-e568-4dd2-80ef-40f8a41e37ae",
+		"name": "쇼핑몰 API 만들기",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "hello",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cnN0b3J5QGdtYWlsLmNvbSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJ1c2VySWQiOjEsImlhdCI6MTcyMjI1NzEzMSwiZXhwIjoxNzIyMjU4OTMxfQ.MUuynjJ3M6oI2DadtRld_dTtffjWZdSqi24_Ejdo9DU",
+						"type": "text"
+					}
+				],
+				"url": "http://localhost:8080/hello"
+			},
+			"response": []
+		},
+		{
+			"name": "signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"test@example.com\",\r\n    \"password\":\"test1234!@#\",\r\n    \"name\":\"testName\",\r\n    \"birthYear\":\"2024\",\r\n    \"birthMonth\":\"7\",\r\n    \"birthDay\":\"11\",\r\n    \"gender\": \"M\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/members/signup"
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"test@example.com\",\r\n    \"password\":\"test1234!@#\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/members/login"
+			},
+			"response": []
+		},
+		{
+			"name": "회원정보 읽어오기",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sIm1lbWJlcklkIjoxLCJuYW1lIjoidGVzdE5hbWUiLCJpYXQiOjE3MjI5NjQ0ODAsImV4cCI6MTcyMjk2NjI4MH0.wt-CxC5oY-pU5YluIUxOxWblIfCgf2ZELc4OwlVhRFQ"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/members/info"
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJJZCI6MSwiaWF0IjoxNzIyNDM0OTU3LCJleHAiOjE3MjI0MzY3NTd9.NARqtO7TpLHQY7F9-lggh_szjHAW0K1LesR1vgBWydQ"
+					}
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJJZCI6MSwiaWF0IjoxNzIyNDM0OTU3LCJleHAiOjE3MjMwMzk3NTd9.UOLMgkuOwEfvMCyUdqZqeqsaEYxSwPBCDqNxRsjONvg\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/members/logout"
+			},
+			"response": []
+		},
+		{
+			"name": "token 재발급",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sIm1lbWJlcklkIjoxLCJuYW1lIjoidGVzdE5hbWUiLCJpYXQiOjE3MjI5NjQ1ODgsImV4cCI6MTcyMzU2OTM4OH0.9p4T1o1ytl1F79kqpemP_gPckYt40E3iPjxCz9C-bno\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/members/refreshToken"
+			},
+			"response": []
+		},
+		{
+			"name": "cart 생성",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sIm1lbWJlcklkIjoxLCJuYW1lIjoidGVzdE5hbWUiLCJpYXQiOjE3MjMwMTgxNzEsImV4cCI6MTcyMzAxOTk3MX0.M8TfHbDdJQdrLCnQUhy1A7JYjKjlKoRR-hPGPZ_t7Uo"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"url": "http://localhost:8080/carts",
+				"description": "로그인 되어 있을 경우에만 사용가능하다.\nJWT 토큰을 헤더로 전송해야 한다.(인증토큰)\n서버에는 해당 인증토큰으로부터 memberId를 구해서, Cart를 현재 날짜 정보로 생성한다.\n이미 현재 날짜 정보로 생성된 Cart가 있을 경우 해당 Cart를 반환한다."
+			},
+			"response": []
+		},
+		{
+			"name": "cart item 추가",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sIm1lbWJlcklkIjoxLCJuYW1lIjoidGVzdE5hbWUiLCJpYXQiOjE3MjMwMTY3MzksImV4cCI6MTcyMzAxODUzOX0.A3QRZ2gKBBycM3ZqIVzwckI9IRMuZCizGwvSEqKBEWk"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cartId\":1,\r\n    \"productId\":1,\r\n    \"productTitle\":\"productTitle\",\r\n    \"productPrice\":10000,\r\n    \"productDescription\":\"productDescription\",\r\n    \"quantity\":5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/cartItems",
+				"description": "로그인 되어 있을 경우에만 사용가능하다.\nJWT 토큰을 헤더로 전송해야 한다.(인증토큰)\n서버에는 해당 인증토큰으로부터 memberId를 구해서, Cart를 현재 날짜 정보로 생성한다.\n이미 현재 날짜 정보로 생성된 Cart가 있을 경우 해당 Cart를 반환한다."
+			},
+			"response": []
+		},
+		{
+			"name": "cart item 조회",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sIm1lbWJlcklkIjoxLCJuYW1lIjoidGVzdE5hbWUiLCJpYXQiOjE3MjMwMTY3MzksImV4cCI6MTcyMzAxODUzOX0.A3QRZ2gKBBycM3ZqIVzwckI9IRMuZCizGwvSEqKBEWk"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/cartItems?cartId=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cartItems"
+					],
+					"query": [
+						{
+							"key": "cartId",
+							"value": "1"
+						}
+					]
+				},
+				"description": "로그인 되어 있을 경우에만 사용가능하다.\nJWT 토큰을 헤더로 전송해야 한다.(인증토큰)\n서버에는 해당 인증토큰으로부터 memberId를 구해서, Cart를 현재 날짜 정보로 생성한다.\n이미 현재 날짜 정보로 생성된 Cart가 있을 경우 해당 Cart를 반환한다."
+			},
+			"response": []
+		},
+		{
+			"name": "cart item 삭제",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sIm1lbWJlcklkIjoxLCJuYW1lIjoidGVzdE5hbWUiLCJpYXQiOjE3MjMwMTY3MzksImV4cCI6MTcyMzAxODUzOX0.A3QRZ2gKBBycM3ZqIVzwckI9IRMuZCizGwvSEqKBEWk"
+					}
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:8080/cartItems/1",
+				"description": "로그인 되어 있을 경우에만 사용가능하다.\nJWT 토큰을 헤더로 전송해야 한다.(인증토큰)\n서버에는 해당 인증토큰으로부터 memberId를 구해서, Cart를 현재 날짜 정보로 생성한다.\n이미 현재 날짜 정보로 생성된 Cart가 있을 경우 해당 Cart를 반환한다."
+			},
+			"response": []
+		},
+		{
+			"name": "카테고리 추가",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sIm1lbWJlcklkIjoxLCJuYW1lIjoidGVzdE5hbWUiLCJpYXQiOjE3MjMwMTY3MzksImV4cCI6MTcyMzAxODUzOX0.A3QRZ2gKBBycM3ZqIVzwckI9IRMuZCizGwvSEqKBEWk"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"런닝복\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/categories",
+				"description": "로그인 되어 있을 경우에만 사용가능하다.\nJWT 토큰을 헤더로 전송해야 한다.(인증토큰)\n서버에는 해당 인증토큰으로부터 memberId를 구해서, Cart를 현재 날짜 정보로 생성한다.\n이미 현재 날짜 정보로 생성된 Cart가 있을 경우 해당 Cart를 반환한다."
+			},
+			"response": []
+		},
+		{
+			"name": "카테고리 조회",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sIm1lbWJlcklkIjoxLCJuYW1lIjoidGVzdE5hbWUiLCJpYXQiOjE3MjMwMTY3MzksImV4cCI6MTcyMzAxODUzOX0.A3QRZ2gKBBycM3ZqIVzwckI9IRMuZCizGwvSEqKBEWk"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/categories",
+				"description": "로그인 되어 있을 경우에만 사용가능하다.\nJWT 토큰을 헤더로 전송해야 한다.(인증토큰)\n서버에는 해당 인증토큰으로부터 memberId를 구해서, Cart를 현재 날짜 정보로 생성한다.\n이미 현재 날짜 정보로 생성된 Cart가 있을 경우 해당 Cart를 반환한다."
+			},
+			"response": []
+		},
+		{
+			"name": "Product 추가",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sIm1lbWJlcklkIjoxLCJuYW1lIjoidGVzdE5hbWUiLCJpYXQiOjE3MjMwMTY3MzksImV4cCI6MTcyMzAxODUzOX0.A3QRZ2gKBBycM3ZqIVzwckI9IRMuZCizGwvSEqKBEWk"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\":\"title\",\r\n    \"price\":30000,\r\n    \"description\":\"product 설명\",\r\n    \"categoryId\":10,\r\n    \"imageUrl\":\"https://via.placeholder.com/400x600\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/products",
+				"description": "로그인 되어 있을 경우에만 사용가능하다.\nJWT 토큰을 헤더로 전송해야 한다.(인증토큰)\n서버에는 해당 인증토큰으로부터 memberId를 구해서, Cart를 현재 날짜 정보로 생성한다.\n이미 현재 날짜 정보로 생성된 Cart가 있을 경우 해당 Cart를 반환한다."
+			},
+			"response": []
+		},
+		{
+			"name": "Product 페이지 조회",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/products?categoryId=10&page=0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"products"
+					],
+					"query": [
+						{
+							"key": "categoryId",
+							"value": "10"
+						},
+						{
+							"key": "page",
+							"value": "0"
+						}
+					]
+				},
+				"description": "로그인 되어 있을 경우에만 사용가능하다.\nJWT 토큰을 헤더로 전송해야 한다.(인증토큰)\n서버에는 해당 인증토큰으로부터 memberId를 구해서, Cart를 현재 날짜 정보로 생성한다.\n이미 현재 날짜 정보로 생성된 Cart가 있을 경우 해당 Cart를 반환한다."
+			},
+			"response": []
+		},
+		{
+			"name": "Product 조회",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\":\"title\",\r\n    \"price\":30000,\r\n    \"description\":\"product 설명\",\r\n    \"categoryId\":10,\r\n    \"imageUrl\":\"https://via.placeholder.com/400x600\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/products/1",
+				"description": "로그인 되어 있을 경우에만 사용가능하다.\nJWT 토큰을 헤더로 전송해야 한다.(인증토큰)\n서버에는 해당 인증토큰으로부터 memberId를 구해서, Cart를 현재 날짜 정보로 생성한다.\n이미 현재 날짜 정보로 생성된 Cart가 있을 경우 해당 Cart를 반환한다."
+			},
+			"response": []
+		}
+	]
+}
