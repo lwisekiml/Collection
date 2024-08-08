@@ -10,6 +10,7 @@ import com.example.shopingmallapi.security.jwt.util.LoginUserDto;
 import com.example.shopingmallapi.service.MemberService;
 import com.example.shopingmallapi.service.RefreshTokenService;
 import io.jsonwebtoken.Claims;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 

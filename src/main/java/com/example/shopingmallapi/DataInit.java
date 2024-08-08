@@ -2,15 +2,13 @@ package com.example.shopingmallapi;
 
 import com.example.shopingmallapi.domain.*;
 import com.example.shopingmallapi.repository.CategoryRepository;
-import com.example.shopingmallapi.repository.MemberRepository;
 import com.example.shopingmallapi.repository.ProductRepository;
 import com.example.shopingmallapi.repository.RoleRepository;
 import com.example.shopingmallapi.service.MemberService;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
 
 @Component
 @RequiredArgsConstructor

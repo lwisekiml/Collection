@@ -37,7 +37,7 @@ public class CartItemController {
     }
 
     @GetMapping
-    public List<CartItem> getCartItems(@IfLogin LoginUserDto loginUserDto, @RequestParam(required = false) Long cartId) {
+    public List<CartItem> getCartItems(@IfLogin LoginUserDto loginUserDto, @RequestParam(required = false, name = "cartId") Long cartId) {
         if(cartId == null)
             return cartItemService.getCartItems(loginUserDto.getMemberId());
         return cartItemService.getCartItems(loginUserDto.getMemberId(), cartId);

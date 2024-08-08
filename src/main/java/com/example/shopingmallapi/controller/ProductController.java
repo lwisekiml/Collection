@@ -21,7 +21,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public Page<Product> getProducts(@RequestParam(required = false, defaultValue = "0") Long categoryId, @RequestParam(required = false, defaultValue = "0") int page) {
+    public Page<Product> getProducts(@RequestParam(required = false, defaultValue = "0", name = "categoryId") Long categoryId, @RequestParam(required = false, defaultValue = "0", name = "page") int page) {
         int size = 10;
         if (categoryId == 0) {
             return productService.getProducts(page, size);

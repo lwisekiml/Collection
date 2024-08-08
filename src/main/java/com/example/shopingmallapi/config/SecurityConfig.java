@@ -4,12 +4,19 @@ import com.example.shopingmallapi.security.jwt.exception.CustomAuthenticationEnt
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
@@ -24,28 +31,39 @@ public class SecurityConfig {
 
     // JWT 토큰으로 인증하는 방식으로 사용할거라 인증에서 HttpSession 사용X
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .formLogin().disable() // id, password를 입력받아 JWT 토큰을 리턴하는 API 만들 것이다.
-                .csrf().disable() // CSRF는 Cross Site Request Forgery의 약자. CSRF공격을 막기 위한 방법
-                .cors()
-                .and()
-                .apply(authenticationManagerConfig)
-                .and()
-                .httpBasic().disable()
-                .authorizeRequests() // 인증이 왔을 때 어떻게 처리할 것인가
-                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll() // Preflight 요청은 허용(사전요청)
-                .mvcMatchers("/members/signup", "/members/login", "/members/refreshToken").permitAll() // "/signup", "/login", "/users/refresh" 페이지는 권한 유무에 관계없이 다 호출 가능
-                .mvcMatchers(GET, "/categories/**", "/products/**").permitAll()
-                .mvcMatchers(GET, "/**").hasAnyRole("USER", "ADMIN") // 나머지 GET, POST 방식은 "USER", "MANAGER", "ADMIN" 권한이 있어야 호출 가능
-                .mvcMatchers(POST, "/**").hasAnyRole("USER", "ADMIN")
-                .anyRequest().hasAnyRole("USER", "ADMIN")
-                .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(customAuthenticationEntryPoint) // exception이 발생 했을 경우 customAuthenticationEntryPoint 에 있는 것으로 처리
-                .and()
-                .build();
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
+                .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .formLogin(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(httpRequests -> httpRequests
+                        .requestMatchers(CorsUtils::isPreFlightRequest).permitAll() // Preflight 요청은 허용한다. https://velog.io/@jijang/%EC%82%AC%EC%A0%84-%EC%9A%94%EC%B2%AD-Preflight-request
+                        .requestMatchers("/members/signup", "/members/login", "/members/refreshToken").permitAll()
+                        .requestMatchers(GET, "/categories/**", "/products/**").permitAll()
+                        .requestMatchers(GET, "/**").hasAnyRole("USER")
+                        .requestMatchers(POST, "/**").hasAnyRole("USER", "ADMIN")
+                        .anyRequest().hasAnyRole("USER", "ADMIN"))
+                .exceptionHandling(httpSecurityExceptionHandlingConfigurer -> httpSecurityExceptionHandlingConfigurer.authenticationEntryPoint(customAuthenticationEntryPoint))
+                .with(authenticationManagerConfig, Customizer.withDefaults());
+
+        return httpSecurity.build();
+    }
+
+    // <<Advanced>> Security Cors로 변경 시도
+    public CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+
+        config.setAllowCredentials(true);
+        config.setAllowedOrigins(List.of("http://localhost:3000"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
+        config.setExposedHeaders(List.of("*"));
+
+        source.registerCorsConfiguration("/**", config);
+        return source;
     }
 
     @Bean
