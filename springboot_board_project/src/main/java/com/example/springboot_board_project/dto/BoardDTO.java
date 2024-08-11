@@ -1,5 +1,6 @@
 package com.example.springboot_board_project.dto;
 
+import com.example.springboot_board_project.entity.BoardEntity;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class BoardDTO {
     private Long id;
     private String boardWriter;
@@ -19,4 +21,17 @@ public class BoardDTO {
     private int boardHits;
     private LocalDateTime boardCreatedTime;
     private LocalDateTime boardUpdatedTime;
+
+    public static BoardDTO toBoardDTO(BoardEntity boardEntity) {
+        return BoardDTO.builder()
+                .id(boardEntity.getId())
+                .boardWriter(boardEntity.getBoardWriter())
+                .boardPass(boardEntity.getBoardPass())
+                .boardTitle(boardEntity.getBoardTitle())
+                .boardContents(boardEntity.getBoardContents())
+                .boardHits(boardEntity.getBoardHits())
+                .boardCreatedTime(boardEntity.getCreatedTime())
+                .boardUpdatedTime(boardEntity.getUpdatedTime())
+                .build();
+    }
 }
