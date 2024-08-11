@@ -40,4 +40,20 @@ public class BoardEntity extends BaseEntity {
                 .boardHits(0)
                 .build();
     }
+
+//    public static BoardEntity toUpdateEntity(BoardDTO boardDTO) {
+//        return BoardEntity.builder()
+//                .id(boardDTO.getId())
+//                .boardWriter(boardDTO.getBoardWriter())
+//                .boardPass(boardDTO.getBoardPass())
+//                .boardTitle(boardDTO.getBoardTitle())
+//                .boardContents(boardDTO.getBoardContents())
+//                .boardHits(boardDTO.getBoardHits())
+//                .build();
+//    }
+
+    public void updateBoard(BoardDTO boardDTO) {
+        this.boardTitle = boardDTO.getBoardTitle();
+        this.boardContents = boardDTO.getBoardContents();
+    }
 }

@@ -45,4 +45,23 @@ public class BoardService {
             return null;
         }
     }
+
+    // 아래 메소드로 하면 date 값이 안나온다.
+    // 유튜브에서는 date 값이 나오지만
+    // 영속성 컨텍스트 캐시값을 가져오는 것으로 인해 date 값이 안 나오는것이 맞는것 같다.
+//    public BoardDTO update(BoardDTO boardDTO) {
+//        BoardEntity boardEntity = BoardEntity.toUpdateEntity(boardDTO);
+//        boardRepository.save(boardEntity);
+//        return findById(boardDTO.getId());
+//    }
+
+    // 아래와 같이 하면 값이 제대로 나온다.
+    public BoardDTO update(BoardDTO boardDTO) {
+        Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(boardDTO.getId());
+        if (optionalBoardEntity.isPresent()) {
+            BoardEntity boardEntity = optionalBoardEntity.get();
+            boardEntity.updateBoard(boardDTO);
+        }
+        return findById(boardDTO.getId());
+    }
 }
