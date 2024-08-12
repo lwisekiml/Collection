@@ -3,6 +3,7 @@ package com.example.springboot_board_project.service;
 import com.example.springboot_board_project.dto.BoardDTO;
 import com.example.springboot_board_project.entity.BoardEntity;
 import com.example.springboot_board_project.repository.BoardRepository;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import java.util.Optional;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final EntityManager em;
 
     public void save(BoardDTO boardDTO) {
         BoardEntity boardEntity = BoardEntity.toSaveEntity(boardDTO);
@@ -37,6 +39,7 @@ public class BoardService {
     }
 
     public BoardDTO findById(Long id) {
+        System.out.println("findById : "+ em.getDelegate());
         Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(id);
         if (optionalBoardEntity.isPresent()) {
             BoardEntity boardEntity = optionalBoardEntity.get();
@@ -46,22 +49,10 @@ public class BoardService {
         }
     }
 
-    // 아래 메소드로 하면 date 값이 안나온다.
-    // 유튜브에서는 date 값이 나오지만
-    // 영속성 컨텍스트 캐시값을 가져오는 것으로 인해 date 값이 안 나오는것이 맞는것 같다.
-//    public BoardDTO update(BoardDTO boardDTO) {
-//        BoardEntity boardEntity = BoardEntity.toUpdateEntity(boardDTO);
-//        boardRepository.save(boardEntity);
-//        return findById(boardDTO.getId());
-//    }
-
-    // 아래와 같이 하면 값이 제대로 나온다.
     public BoardDTO update(BoardDTO boardDTO) {
-        Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(boardDTO.getId());
-        if (optionalBoardEntity.isPresent()) {
-            BoardEntity boardEntity = optionalBoardEntity.get();
-            boardEntity.updateBoard(boardDTO);
-        }
-        return findById(boardDTO.getId());
+        System.out.println("update : "+ em.getDelegate());
+        BoardEntity boardEntity = BoardEntity.toUpdateEntity(boardDTO);
+        boardRepository.save(boardEntity);
+       return findById(boardDTO.getId());
     }
 }
