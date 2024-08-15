@@ -37,15 +37,24 @@ public class BoardDTO {
     }
 
     public static BoardDTO toBoardDTO(BoardEntity boardEntity) {
-        return BoardDTO.builder()
-                .id(boardEntity.getId())
-                .boardWriter(boardEntity.getBoardWriter())
-                .boardPass(boardEntity.getBoardPass())
-                .boardTitle(boardEntity.getBoardTitle())
-                .boardContents(boardEntity.getBoardContents())
-                .boardHits(boardEntity.getBoardHits())
-                .boardCreatedTime(boardEntity.getCreatedTime())
-                .boardUpdatedTime(boardEntity.getUpdatedTime())
-                .build();
+        BoardDTO boardDTO = new BoardDTO();
+        boardDTO.setId(boardEntity.getId());
+        boardDTO.setBoardWriter(boardEntity.getBoardWriter());
+        boardDTO.setBoardPass(boardEntity.getBoardPass());
+        boardDTO.setBoardTitle(boardEntity.getBoardTitle());
+        boardDTO.setBoardContents(boardEntity.getBoardContents());
+        boardDTO.setBoardHits(boardEntity.getBoardHits());
+        boardDTO.setBoardCreatedTime(boardEntity.getCreatedTime());
+        boardDTO.setBoardUpdatedTime(boardEntity.getUpdatedTime());
+        if (boardEntity.getFileAttached() == 0) {
+            boardDTO.setFileAttached(0); // 0
+        } else {
+            boardDTO.setFileAttached(boardEntity.getFileAttached()); // 1
+            boardDTO.setOriginalFileaName(boardEntity.getBoardFileEntityList().get(0).getOriginalFileName());
+            boardDTO.setStoredFileName(boardEntity.getBoardFileEntityList().get(0).getStoredFileName());
+
+        }
+
+        return boardDTO;
     }
 }
