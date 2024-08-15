@@ -4,6 +4,9 @@ import com.example.springboot_board_project.dto.BoardDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -31,6 +34,12 @@ public class BoardEntity extends BaseEntity {
     @Column
     private int boardHits;
 
+    @Column
+    private int fileAttached; // 1 or 0
+
+    @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<BoardFileEntity> boardFileEntityList = new ArrayList<>();
+
     public static BoardEntity toSaveEntity(BoardDTO boardDTO) {
         return BoardEntity.builder()
                 .boardWriter(boardDTO.getBoardWriter())
@@ -38,6 +47,7 @@ public class BoardEntity extends BaseEntity {
                 .boardTitle(boardDTO.getBoardTitle())
                 .boardContents(boardDTO.getBoardContents())
                 .boardHits(0)
+                .fileAttached(0) // 파일 없음
                 .build();
     }
 
@@ -51,4 +61,27 @@ public class BoardEntity extends BaseEntity {
                 .boardHits(boardDTO.getBoardHits())
                 .build();
     }
+
+    public static BoardEntity toSaveFileEntity(BoardDTO boardDTO) {
+        return BoardEntity.builder()
+                .boardWriter(boardDTO.getBoardWriter())
+                .boardPass(boardDTO.getBoardPass())
+                .boardTitle(boardDTO.getBoardTitle())
+                .boardContents(boardDTO.getBoardContents())
+                .boardHits(0)
+                .fileAttached(1) // 파일 없음
+                .build();
+    }
+
+    // DataInit 사용
+    public BoardEntity(Long id, String boardWriter, String boardPass, String boardTitle, String boardContents, int boardHits) {
+        this.id = id;
+        this.boardWriter = boardWriter;
+        this.boardPass = boardPass;
+        this.boardTitle = boardTitle;
+        this.boardContents = boardContents;
+        this.boardHits = boardHits;
+    }
+
+
 }
