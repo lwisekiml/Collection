@@ -47,7 +47,7 @@ public class BoardService {
             MultipartFile boardFile = boardDTO.getBoardFile(); // 1
             String originalFilename = boardFile.getOriginalFilename(); // 2
             String storedFileName = System.currentTimeMillis() + "_" + originalFilename; // 3
-            String savePath = "G:/" + storedFileName; // 4
+            String savePath = "G:/springboot_img/" + storedFileName; // 4
             boardFile.transferTo(new File(savePath)); // 5
             BoardEntity boardEntity = BoardEntity.toSaveFileEntity(boardDTO);
             Long saveId = boardRepository.save(boardEntity).getId(); // 6
@@ -58,6 +58,7 @@ public class BoardService {
         }
     }
 
+    @Transactional
     public List<BoardDTO> findAll() {
         List<BoardEntity> boardEntityList = boardRepository.findAll();
         ArrayList<BoardDTO> boardDTOList = new ArrayList<>();
@@ -72,6 +73,7 @@ public class BoardService {
         boardRepository.updateHits(id);
     }
 
+    @Transactional
     public BoardDTO findById(Long id) {
         System.out.println("findById : "+ em.getDelegate());
         Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(id);
