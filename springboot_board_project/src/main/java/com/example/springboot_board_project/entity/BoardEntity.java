@@ -69,7 +69,7 @@ public class BoardEntity extends BaseEntity {
                 .boardTitle(boardDTO.getBoardTitle())
                 .boardContents(boardDTO.getBoardContents())
                 .boardHits(0)
-                .fileAttached(1) // 파일 없음
+                .fileAttached(1)
                 .build();
     }
 
