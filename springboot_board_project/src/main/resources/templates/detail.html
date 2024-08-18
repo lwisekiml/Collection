@@ -51,7 +51,20 @@
 </div>
 <!-- 댓글 출력 -->
 <div id="comment-list">
-
+    <table>
+        <tr>
+            <th>댓글번호</th>
+            <th>작성자</th>
+            <th>내용</th>
+            <th>작성시간</th>
+        </tr>
+        <tr th:each="comment: ${commentList}">
+            <td th:text="${comment.id}"></td>
+            <td th:text="${comment.commentWriter}"></td>
+            <td th:text="${comment.commentContents}"></td>
+            <td th:text="${comment.commentCreatedTime}"></td>
+        </tr>
+    </table>
 </div>
 </body>
 <!--model에 담아온 데이터를 js에서 활용하는 경우에 th:inline="javascript" 가 필요 -->
