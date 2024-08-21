@@ -125,3 +125,31 @@ HEADER를 통해 content-type을 지정하여 데이터 전달(HTML, XML, JSON, 
 - Spring Framework에서 제공하는 클래스 중 HttpEntity라는 클래스를 상속받아 사용하는 클래스
 - 사용자의 HttpRequest에 대한 응답 데이터를 포함
 - 포함하는 클래서(HttpStatus, HttpHeaders, HttpBody)
+
+---
+
+### Lombok
+- 반복되는 메소드를 Annotation을 사용하여 자동으로 작성해주는 라이브러리
+
+>### @NoArgsConstructor
+>- 파라미터가 없는 생성자를 생성
+>
+>### @AllArgsConstructor
+>- 모든 필드값을 파라미터로 갖는 생성자를 생성
+>
+>### @RequiredArgsConstructor
+>- 필드값 중 final이나 @NotNull인 값을 갖는 생성자를 생성
+>
+>### @ToString
+>- toString 메소드를 자동으로 생성해주는 기능
+>- exclude 속성으로 특정 필드를 toString에서 제외 시킬 수 있음
+>
+>### @EqualsAndHashCode
+>- equals, hashCode 메소드를 자동 생성
+   >  - equals : 두 객체의 내용이 같은지 동등성(equality)를 비교
+>  - hashCode : 두 객체가 같은 객체인지 동일성(identity)를 비교
+>  - callSuper 속성을 통해 메소드 생성시 부모 클래스의 필드까지 고려할지 여부 설정 가능
+     >    - callSuper = true 이면 부모 클래스 필드 값들도 동일한지 체크함
+>
+> ### @Data
+> - @Getter, @Setter, @RequiredArgsConstructor, @ToString, @EqualsAndHashCode 기능을 한번에 추가
