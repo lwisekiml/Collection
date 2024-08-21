@@ -110,6 +110,8 @@ HEADER를 통해 content-type을 지정하여 데이터 전달(HTML, XML, JSON, 
 - GET 형식의 요청에서 쿼리 문자열을 전달하기 위해 사용되는 방법
 - '?'를 기준으로 우측에 {키}={값} 형태로 전달, 복수 형태로 전달할 경우 & 사용
 
+---
+
 ### Swagger
 - 서버로 요청되는 API 리스트를 HTML 화면으로 문서화하여 테스트 할 수 있는 라이브러리
 - 이 라이브러리는 서버가 가동되면서 @RestController를 읽어 API를 분석하여 HTML 문서를 작성함
@@ -117,3 +119,9 @@ HEADER를 통해 content-type을 지정하여 데이터 전달(HTML, XML, JSON, 
 - 2.x.x 버전: http://localhost:8080/swagger-ui.html
 - 3.x.x 버전: http://localhost:8080/swagger-ui/index.html
 
+---
+
+### ResponseEntity
+- Spring Framework에서 제공하는 클래스 중 HttpEntity라는 클래스를 상속받아 사용하는 클래스
+- 사용자의 HttpRequest에 대한 응답 데이터를 포함
+- 포함하는 클래서(HttpStatus, HttpHeaders, HttpBody)
