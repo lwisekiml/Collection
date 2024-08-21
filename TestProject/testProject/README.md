@@ -153,3 +153,50 @@ HEADER를 통해 content-type을 지정하여 데이터 전달(HTML, XML, JSON, 
 >
 > ### @Data
 > - @Getter, @Setter, @RequiredArgsConstructor, @ToString, @EqualsAndHashCode 기능을 한번에 추가
+
+---
+
+### Entity(Domain)
+- DB에 쓰일 컬럼과 여러 엔티티 간의 연관관계를 정의
+
+### Repository
+- Entity에 의해 생성된 DB에 접근하는 메소드를 사용하기 위한 인터페이스
+- DB에 적용하고자 하는 CRUD를 정의하는 영역
+
+### DAO(Data Access Object)
+- DB에 접근하는 객체를 의미
+- Service가 DB에 연결할 수 있게 해주는 역할
+- DB를 사용하여 데이터를 조회하거나 조작하는 기능을 전담
+
+### DTO(Data Transfer Object)
+- DTO는 VO(Value Object)로 불리기도 하며, 계층간 데이터 교환을 위한 객체를 의미
+- VO의 경우 Read Only의 개념을 가지고 있음
+
+---
+
+### ORM
+- 어플리케이션의 객체와 관계형 DB의 데이터를 자동으로 매핑해주는 것을 의미
+  * Java의 데이터 클래스와 관계형 DB의 테이블을 매핑
+- 대표적으로 JPA, Hibernate 등이 있다.(Persistent API)
+
+### ORM 장점
+- 쿼리가 아닌 직관적인 코드로 데이터 조작 가능
+  - 비즈니스 로직에 집중 가능 
+- 재사용 및 유지보수 편리
+  - ORM은 독립적으로 작성되어 있어 재사용 가능
+  - 매핑정보를 명확하게 설계하기 때문에 따로 DB를 볼 필요 없음
+- DBMS에 대한 종속성이 줄어듬
+  - DBMS를 교체하는 작업을 비교적 적은 리스크로 수행 가능
+
+### ORM 단점
+- 복잡성이 커질 경우 ORM만으로 구현 어려움
+- 잘못 구현할 경우 속도 저하 발생
+- 대형 쿼리는 별도의 튜닝이 필요할 수 있음
+
+### JPA (Java Persistance API) - ORM과 관련된 인터페이스 모음
+
+### Hibernate - ORM Framework 중 하나
+- JPA의 실제 구현체 중 하나이며, JPA 구현체 중 가장 많이 사용됨
+
+### Spring Data JPA
+- Spring Framework에서 JPA를 편리하게 사용할 수 있게 지원하는 라이브러리
