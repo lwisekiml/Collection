@@ -200,3 +200,54 @@ HEADER를 통해 content-type을 지정하여 데이터 전달(HTML, XML, JSON, 
 
 ### Spring Data JPA
 - Spring Framework에서 JPA를 편리하게 사용할 수 있게 지원하는 라이브러리
+
+---
+
+(document - logback 이미지 참고)
+### Logback
+- Log4J를 기반으로 개발된 로깅(Logging) 라이브러리
+- 출시순서 : log4j -> logback -> log4j2
+
+### Logback 특징
+- 로그에 특정 레벨 설정 가능(Trace -> Debug -> Info -> Warn -> Error)
+- 실운영과 테스트 상황에서 각각 다른 출력 레벨 설정 가능
+- 출력 방식 설정 가능
+- 설정 파일을 일정 시간마다 스캔하여 어플리케이션 중단 없이 설정 변경 가능
+- 자체적으로 로그 압축 지원
+- 로그 보관 기간 설정 가능
+
+### Logback 설정
+- 일반적으로 Classpath에 있는 logback 설정 파일 참조
+  - Java Legacy, Spring은 logback.xml 참조
+  - Spring Boot는 logback-spring.xml 참조
+
+### 로그 레벨
+TRACE -> DEBUG -> INFO -> WARN -> ERROR
+- ERROR : 시스템적으로 심각한 문제가 발생하여 작동이 불가한 경우
+- WARN : 시스템 에러의 원인이 될 수 있는 경고 레벨, 처리 가능한 사항
+- INFO : 상태변경과 같은 정보성 메시지
+- DEBUG : 어플리케이션의 디버깅을 위한 메시지 레벨
+- TRACE : DEBUG 레벨 보다 더 디테일한 메시지를 표현하기 위한 레벨
+참고 : INFO로 설정 시, TRACE, DEBUG는 출력 안됨
+
+### pattern
+|패턴|설명|
+|---|---|
+|%Logger{length} | Logger Name|
+|%-5level | 로그 레벨, -5는 출력의 고정폭 값|
+|%msg| 로그 메세지 영역 (==%message)|
+|${PID|-} | 프로세스 id|
+|%d | 로그 기록 시간 |
+|%p | 로깅 레벨|
+|%F| 로깅이 발생한 프로그램 파일명 |
+|%M | 로깅이 발생한 메소드의 이름 |
+|%l| 로깅이 발생한 호출지의 정보|
+|%L| 로깅이 발생한 호출지의 라인 수|
+|%thread | 현재 Thread 명|
+|%t | 로깅이 발생한 Thread 명 %c| 로깅이 발생한 카테고리 %C | 로깅이 발생한 클래스 명 %m| 로그 메시지|
+|%n| 줄바꿈|
+|%% | % 출력|
+|%r|어플리케이션 실행 후 로깅이 발생한 시점까지의 시간|
+
+예시) <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [%thread] %logger{30} %msg%n</pattern>
+

@@ -3,6 +3,8 @@ package com.example.testproject.controller;
 import com.example.testproject.data.dto.ProductDto;
 import com.example.testproject.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -10,12 +12,20 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ProductController {
 
+    private final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
     private final ProductService productService;
 
     // http://localhost:8080/api/v1/product-api/product/{productId}
     @GetMapping("/product/{productId}")
     public ProductDto getProduct(@PathVariable String productId) {
-        return productService.getProduct(productId);
+        long startTime = System.currentTimeMillis();
+        LOGGER.info("[ProductController] perform {} of testproject API", "getProduct");
+
+        ProductDto productDto = productService.getProduct(productId);
+
+        LOGGER.info("[ProductController] Response :: productId = {}, productName = {}, productPrice = {}, productStock = {}, Response Time = {}ms",
+                productDto.getProductId(), productDto.getProductName(), productDto.getProductPrice(), productDto.getProductStock(), (System.currentTimeMillis() - startTime));
+        return productDto;
     }
 
     // http://localhost:8080/api/v1/product-api/product
