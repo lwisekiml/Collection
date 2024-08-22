@@ -251,3 +251,26 @@ TRACE -> DEBUG -> INFO -> WARN -> ERROR
 
 예시) <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [%thread] %logger{30} %msg%n</pattern>
 
+---
+
+### 유효성 검사 / 데이터 검증 (Validation)
+- 서비스의 비즈니스 로직이 올바르게 동작하기 위해 사용되는 데이터에 대한 사전 검증하는 작업이 필요함
+- 들어오는 데이테에 대해 의도한 형식의 값이 제대로 들어오는 지 체크하는 과정을 뜻함
+
+| 어노테이션                     | 설명                   |
+|---------------------------|----------------------|
+| @Size                     | 문자의 길이 조건            |
+| @NotNull                  | null                 |
+| @NotEmpty                 | @NotNull + "" 값 불가   |
+| @NotBlank                 | @NotEmpty + " " 값 불가 |
+|                           |
+| @Past                     | 과거 날짜                |
+| @PastOrPresent            | @Past + 오늘 날짜        |
+| @Future                   | 미래 날짜                |
+| @FutureOrPresent          | @Future + 오늘 날짜      |
+|                           |
+| @Pattern                  | 정규식을 통한 조건           |
+| @Max                      | 최대값 조건 설정            |
+| @Min                      | 최소값 조건 설정            |
+| @AssertTrue / AssertFalse | 참/거짓 조건 설정           |
+| @Valid                    | 해당 객체의 유효성 검사        |
