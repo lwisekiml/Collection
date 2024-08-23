@@ -203,10 +203,11 @@ HEADER를 통해 content-type을 지정하여 데이터 전달(HTML, XML, JSON, 
 
 ---
 
-(document - logback 이미지 참고)
 ### Logback
 - Log4J를 기반으로 개발된 로깅(Logging) 라이브러리
 - 출시순서 : log4j -> logback -> log4j2
+
+![logback구조.PNG](document/logback/logback구조.PNG)
 
 ### Logback 특징
 - 로그에 특정 레벨 설정 가능(Trace -> Debug -> Info -> Warn -> Error)
@@ -220,6 +221,12 @@ HEADER를 통해 content-type을 지정하여 데이터 전달(HTML, XML, JSON, 
 - 일반적으로 Classpath에 있는 logback 설정 파일 참조
   - Java Legacy, Spring은 logback.xml 참조
   - Spring Boot는 logback-spring.xml 참조
+
+![logback설정파일형식.PNG](document/logback/logback설정파일형식.PNG)
+
+![appender.PNG](document/logback/appender.PNG)
+
+![encoder_root.PNG](document/logback/encoder_root.PNG)
 
 ### 로그 레벨
 TRACE -> DEBUG -> INFO -> WARN -> ERROR
@@ -274,3 +281,38 @@ TRACE -> DEBUG -> INFO -> WARN -> ERROR
 | @Min                      | 최소값 조건 설정            |
 | @AssertTrue / AssertFalse | 참/거짓 조건 설정           |
 | @Valid                    | 해당 객체의 유효성 검사        |
+
+
+---
+
+### Exception
+- @ControllerAdvice를 통한 모든 Controller에서 발생할 수 있는 예외 처리
+- @ExceptionHandler를 통한 특정 Controller의 예외 처리
+- 
+![exception_class.PNG](document/exception/exception_class.PNG)
+### Exception class
+모든 예외 클래스는 Throwable 클래스를 상속받고 있음
+
+||Checked Exception|Unchecked Exception|
+|-|---|---|
+|처리여부|반드시 예외 처리 필요|명시적 처리 강제하지 않음|
+|확인시점|컴파일 단계|실행 중 단계|
+|예외발생시 트랜잭션|롤백하지 않음|롤백함|
+|대표예외|IOException<br/>SQLExeption|NullPointerException<br/>Illegal ArgumentException<br/>IndexOutOfBoundException<br/>SystemException|
+
+### @ControllerAdvice, @RestControllerAdvice
+- Spring에서 제공
+- @Controller, @RestController에서 발생하는 예외를 한 곳에서 관리하고 처리할 수 있게 하는 어노테이션
+- 설정을 통해 범위 지정 가능(@RestControllerAdvice(basePackages="com.example.testproject") 와 같이 패키지 범위 설정 가능
+
+### @ExceptionHandler
+- 예외 처리 상황 발생 시 해당 Handler로 처리하겠다는 것을 명시하는 어노테이션
+- 어떤 ExceptionClass를 처리할지 설정 가능(@ExceptionHandler(OOException.class))
+- Exception.class는 최상위 클래스로 하위 세부 예외 처리 클래스로 설정한 핸들러가 존재하면 그 핸들러가 우선처리하게 되면 처리된지 못하는 예외 처리에 대해 ExceptionClass에서 핸들링함
+- @ControllerAdvice로 설정된 클래스 내에서 메소드로 정의할 수 있지만 각 Controller 안에 설정도 가능
+- 전역 설정(@ControllerAdvice)보다 지역 설정(Controller)으로 정의한 Handler가 우선순위를 가짐
+
+![priority.PNG](document/exception/priority.PNG)
+
+![controller_exception.PNG](document/exception/controller_exception.PNG)
+
