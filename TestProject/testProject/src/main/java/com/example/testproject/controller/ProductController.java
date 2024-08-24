@@ -1,5 +1,8 @@
 package com.example.testproject.controller;
 
+import com.example.testproject.common.Constants;
+import com.example.testproject.common.Constants.ExceptionClass;
+import com.example.testproject.common.exception.TestHubException;
 import com.example.testproject.data.dto.ProductDto;
 import com.example.testproject.service.ProductService;
 import jakarta.validation.Valid;
@@ -57,5 +60,10 @@ public class ProductController {
     @DeleteMapping(value = "/product/{productId}")
     public ProductDto deleteProduct(@PathVariable String productId) {
         return null;
+    }
+
+    @PostMapping("/product/exception")
+    public void exceptionTest() throws TestHubException {
+        throw new TestHubException(ExceptionClass.PRODUCT, HttpStatus.BAD_REQUEST, "의도한 에러 발생");
     }
 }
