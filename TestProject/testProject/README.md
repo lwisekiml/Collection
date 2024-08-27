@@ -408,7 +408,7 @@ serverBox / testproject 를 각각 실행하여 postman 또는 swagger로 테스
 > 
 > @MockBean
 > - 테스트할 클래스에서 주입 받고 있는 객체에 대해 가짜 객체를 생성해주는 어노테이션
-> - 해당 객체를 실제 행위를 하지 않음
+> - 해당 객체는 실제 행위를 하지 않음
 > - given()메소드를 활용하여 가짜 객체의 동작에 대해 정의하여 사용할 수 있음
 > 
 > @AutoConfigureMockMvc
@@ -437,3 +437,75 @@ serverBox / testproject 를 각각 실행하여 postman 또는 swagger로 테스
   - Self-Validation : 테스트는 그 자체로 실행하여 결과를 확인할 수 있어야 함
   - Timely : 단위 테스트는 비즈니스 코드가 완성되기 전에 구성하고 테스트가 가능해야 함  
     (코드가 완성되기 전부터 테스트가 따라와야 한다는 TDD의 원칙을 담고 있음)
+
+---
+
+### 코드 커버리지
+- 소프트웨어의 테스트 수준이 충분한지 표현할 수 있는 지표 중 하나
+- 테스트를 진행했을 때 해당 코드가 실행되었는지를 표현하는 방법
+
+### Jacoco
+- Java 코드의 커버리지를 체크하는 라이브러리
+- 작성된 코드의 테스트 커버리지(Test Coverage)를 측정하는 도구
+- Runtime으로 Test Case를 실행하여 Coverage를 체크하는 방식으로 사용됨
+- 테스트 코드를 통해 테스트를 실행하고 그 결과를 html, xml, csv등의 형식으로 Report를 제공
+
+### 블랙 박스 테스트
+- 소프트웨어의 내부 구조나 작동 원리를 모르는 상태에서 동작을 검사하는 방식
+- 다양한 값을 입력하여 올바른 출력이 나오는지 테스트
+- 사용자 관점의 테스트 방법
+
+### 화이트 박스 테스트
+- 소프트웨어의 내부 구조와 동작을 검사하는 테스트 방식
+- 소프트웨어 내부 소스 코드를 테스트하는 방법
+- 개발자 관점의 테스트 방법
+
+### Jacoco pom.xml 파일 설정
+- Execution 내부에 사용되는 값
+- prepare-agent
+  - 테스트 중인 어플리케이션에서 인수를 전달하는 Jacoco Runtime Agent에 대한 property를 준비
+- merge : 여러 실행 데이터 파일들을 하나로 통합하는 명령어
+- report : 하나의 프로젝트 테스트에 대한 Code Coverage 리포트를 생성하는 명령어
+- check : code coverage metric이 충돌하는 지 확인하는 명령어
+
+![Jacoco_pom_xml.PNG](document/Jacoco/Jacoco_pom_xml.PNG)
+
+### Jacoco Rule
+>- Element type - 코드 커버리지 체크 기준
+>  - BUNDLE (default) : 패키지 번들
+>  - PACKAGE : 패키지
+>  - CLASS : 클래스
+>  - SOURCEFILE : 소스 파일
+>  - METHOD : 메소드
+>
+> - Counter - 코드 커버리지를 측정할 때 사용하는 지표
+>   - LINE : 빈 줄을 제외한 실제 코드의 라인 수
+>   - BRANCH : 조건문 등의 분기 수
+>   - CLASS : 클래스 수
+>   - METHOD : 메소드 수
+>   - INSTRUCTION (default) : Java 바이트 코드 명령 수 
+>   - COMPLEXITY : 복잡도
+> 
+> - Value - 커버리지 정도를 나타내는 지표
+>   - TOTALCOUNT : 전체 개수
+>   - MISSEDCOUNT : 커버되지 않은 개수
+>   - COVEREDCOUNT : 커버된 개수
+>   - MISSEDRATIO : 커버되지 않은 비율(0~1)
+>   - COVEREDRATIO (default) : 커버된 비율(0~1)
+
+### Jacoco 설정 예시
+- 특정 클래스 테스트 대상에서 제외하기 위해 다음과 같이 설정
+
+![Jacoco_setting_example.PNG](document/Jacoco/Jacoco_setting_example.PNG)
+
+다음과 같이 측정 기준을 설정할 수 있다.
+<rule>을 기준으로 총 2개의 측정 기준이 제시된 예제
+
+상단 <rule> 의미 : 패키지 번들 단위로 바이트 코드 명령 수에 40% 미만일 경우 에러 발생
+하단 <rule> 의미 : 메소드 라인 수가 30을 초과할 경우 에러 발생
+
+### Jacoco 와 Maven LifeCycle
+- Maven의 라이프 사이클
+  - complie -> test -> package -> intall -> deploy
+- Jacoco 플로그인은 Maven 라이프 사이크에 의해 동작하며, test phase 이후에 측정 가능
+  - package phase 이후로 동작 가능
