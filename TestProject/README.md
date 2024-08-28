@@ -509,3 +509,65 @@ serverBox / testproject 를 각각 실행하여 postman 또는 swagger로 테스
   - complie -> test -> package -> intall -> deploy
 - Jacoco 플로그인은 Maven 라이프 사이크에 의해 동작하며, test phase 이후에 측정 가능
   - package phase 이후로 동작 가능
+
+---
+
+### 스프링
+- 의존성 주입(DI, Dependency Injection)과 제어역전(IOC, Inversion Of Control), 관점 지향 프로그래밍(AOP)이 가장 중요한 요소
+- 이 요소를 통해 느슨한 결합(Loose Coupling)을 달성할 수 있으며 단위 테스트를 수행하기 용이하다.
+
+### 의존성 주입(DI, Dependency Injection)
+- 다음과 같은 코드에서 Controller는 'MyService'객체에 의존하게 되고 객체 간의 결합도가 높아지며 단위 테스트를 위해 Mock 객체를 사용할 수 없게 된다.
+
+![DI사용하지않을때.PNG](document/spring_springboot/DI사용하지않을때.PNG)
+
+- 다음과 같이 DI를 사용하는 경우 @Service, @Autowired를 통해 MyService의 인스턴스를 획득하며 단위 테스트 상황에서 Service 객체를 Mock 객체로 대체하여 쉽게 테스트가 가능하다.
+
+![DI사용.PNG](document/spring_springboot/DI사용.PNG)
+
+### 관점 지향 프로그래밍(AOP, Aspect Oriented Programming)
+- OOP를 보완하는 수단으로 여러 곳에 쓰이는 공통 기능을 모듈화하여 필요한 곳에 연결함으로써 유지보수 또는 재사용에 용이하도록 하는 것을 의미
+- 결합도를 낮춘 개발이 가능함
+
+### 스프링 프레임워크의 대표적 모듈
+- Spring JDBC
+- Spring MVC
+- Spring AOP
+- Spring ORM
+- Spring Test
+- Spring Expression Language (SpEL)
+
+### 스프링 부트가 나오게 된 이유
+> Spring Boot makes it easy to create stand-alone, production-grade Spring based Application that you can "just run".
+> 스프링 부트는 단지 실행만 하면 되는 스프링 기반의 어플리케이션을 쉽게 만들 수 있다.
+
+- 스프링은 다양한 기능르 제공하고 있지만, 그 기능을 사용하기 위한 설정에 많은 시간이 걸림
+ex) Transaction Manager, Hibernate Datasource, Entity Manager, Session Factory 등
+
+![hibernate.PNG](document/spring_springboot/hibernate.PNG)
+Hibernate 관련 spring 설정
+
+### 스프링 부트가 제공하는 기능
+- 스프링 부트는 자동설정을 이용
+  - 어플리케이션 개발에 필요한 모든 디펜던시(Dependency)를 프레임워크에서 관리
+  - jar 파일 클래스 패스에 있는 경우 스프링 부트는 Dispatcher Servlet으로 자동 구성됨
+  - 스프링 부트는 미리 설정되어 있는 Starter 프로젝트를 제공
+  - xml 설정 없이 자바 코드를 통해 설정할 수 있음
+- 어플리케이션을 개발하면서 사용되는 디펜턴시들은 호환되는 버전으로 관리해줘야 함
+  - 이런 복잡도를 줄이기 위해 스프링 부트는 SpringBoot-Starter를 제공하여 자동으로 호환되는 버전을 관리
+- 모니터링 관리를 위한 스프링 액추에이터(Spring Actuator) 제공
+  - 서비스가 정상적으로 동작하는지 상태 모니터링 제공
+  - 스프링 액추에이터는 스프링 부트에서 제공하는 상태 정보를 보다 쉽게 모니터링할 수 있게 기능 제공
+
+### 스프링 부트 프로젝트의 의존성 관리
+- spring boot starter dependency를 통해 다양한 패키지를 수용하고 있음
+- 이를 통해 개발자는 dependency 관리(호환성 체크 등)에 대해 고려할 필요가 없어짐
+
+### 스프링 부트 프로젝트의 starter 디펜던시
+- spring-boot-starter-web-service : SOAP 웹 서비스
+- spring-boot-starter-web : RESTful 응용 프로그램
+- spring-boot-starter-test : 단위 테스트, 통합 테스트
+- spring-boot-starter-jdbc : 기본적인 JDBC
+- spring-boot-starter-security : 스프링 시큐리티(인증, 권한)
+- spring-boot-starter-data-jpa : Spring Data JPA(Hibernate)
+- spring-boot-starter-data-cache : 캐시
