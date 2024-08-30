@@ -571,3 +571,37 @@ Hibernate 관련 spring 설정
 - spring-boot-starter-security : 스프링 시큐리티(인증, 권한)
 - spring-boot-starter-data-jpa : Spring Data JPA(Hibernate)
 - spring-boot-starter-data-cache : 캐시
+
+---
+
+### @MappedSuperclass
+- 여러 엔티티 객체에서 사용되는 공통 속성은 대표적으로 id, createdAt, updatedAt 이 있다.
+- 공통되는 속성을 별도의 클래스로 구분하여 @MappedSuperclass를 선언 후 사용
+- 코드 상 분리, DB의 테이블 개념에서는 분리되어 있지 않음
+
+![MappedSuperclass.PNG](document/JPA/MappedSuperclass.PNG)
+
+### Auditing
+- JPA에서의 Auditing은 각 엔티티 별로 누가, 언제 접근했는지 기록하여 감시 체계를 꾸리는 것을 의미
+- Spring Data JPA에서 이 기능을 사용하기 위해서는 @EnableJpaAuditing 사용
+
+### @EntityLitener
+- 엔티티 객체를 DB에 적용하기 전/후에 콜백을 요청하는 어노테이션
+- @EntityLitener의 파라미터로 콜백을 요청할 클래스를 지엉하여 사용
+- @EntityLitener의 요청 시점은 다음과 같다.
+
+|EntityListener|설명|
+|---|---|
+|@PostLoad|Select 실행 직후|
+|@PrePersist|Persist(Insert)|
+|@PostPersist|Persist(Insert)|
+|@PreUpdate|Merge(Update)|
+|@PostUpdate|Merge(Update)|
+|@PreRemove|Remove(Delete)|
+|@PostRemove|Remove(Delete)|
+
+### JPA Auditing Annotation
+- @CreatedDate : 엔티티가 저장되는 시점에 자동으로 시간 주입
+- @CreatedBy : 엔티티가 저장되는 시점에 저장 주체가 누구인지 주입
+- @LastModifiedDate : 엔티티가 수정되는 시점에 자동으로 시간 주입
+- @LastModifiedBy : 엔티티가 수정되는 시점에 수정 주체가 누군인지 주입

@@ -1,0 +1,37 @@
+package com.example.testproject.service.impl;
+
+import com.example.testproject.data.entity.ListenerEntity;
+import com.example.testproject.data.repository.ListenerRepository;
+import com.example.testproject.service.ListenerService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class ListenerServiceImpl implements ListenerService {
+
+    private final ListenerRepository listenerRepository;
+
+    @Override
+    public ListenerEntity getEntity(Long id) {
+        return listenerRepository.findById(id).get();
+    }
+
+    @Override
+    public void saveEntity(ListenerEntity listenerEntity) {
+        listenerRepository.save(listenerEntity);
+    }
+
+    @Override
+    public void updateEntity(ListenerEntity listenerEntity) {
+        ListenerEntity foundListrner = listenerRepository.findById(listenerEntity.getId()).get();
+        foundListrner.setName(listenerEntity.getName());
+
+        listenerRepository.save(foundListrner);
+    }
+
+    @Override
+    public void removeEntity(ListenerEntity listenerEntity) {
+        listenerRepository.delete(listenerEntity);
+    }
+}
