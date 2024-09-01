@@ -14,19 +14,19 @@ import lombok.*;
 @Builder
 @ToString
 @Table(name = "product")
-public class ProductEntity extends BaseEntity {
+public class Product extends BaseEntity {
     @Id
-    String productId;
-    String productName;
-    Integer productPrice;
-    Integer productStock;
+    String id;
+    String name;
+    Integer price;
+    Integer stock;
 
     public ProductDto toDto(){
         return ProductDto.builder()
-                .productId(productId)
-                .productName(productName)
-                .productPrice(productPrice)
-                .productStock(productStock)
+                .id(id)
+                .name(name)
+                .price(price)
+                .stock(stock)
                 .build();
     }
 }

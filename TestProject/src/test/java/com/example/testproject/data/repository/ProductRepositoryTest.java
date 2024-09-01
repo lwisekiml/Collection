@@ -1,6 +1,6 @@
 package com.example.testproject.data.repository;
 
-import com.example.testproject.data.entity.ProductEntity;
+import com.example.testproject.data.entity.Product;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,53 +30,53 @@ class ProductRepositoryTest {
         productRepository.save(getProduct(Integer.toString(count), count++, 5100, 1700)); // 10
     }
 
-    private ProductEntity getProduct(String id, int nameNumber, int price, int stock) {
-        return new ProductEntity(id, "상품" + nameNumber, price, stock);
+    private Product getProduct(String id, int nameNumber, int price, int stock) {
+        return new Product(id, "상품" + nameNumber, price, stock);
     }
 
     @Test
     void findTest() {
-        List<ProductEntity> foundAll = productRepository.findAll();
+        List<Product> foundAll = productRepository.findAll();
         System.out.println("====↓↓ Test Data ↓↓====");
-        for (ProductEntity productEntity : foundAll) {
-            System.out.println(productEntity.toString());
+        for (Product product : foundAll) {
+            System.out.println(product.toString());
         }
         System.out.println("====↑↑ Test Data ↑↑====");
 
-        List<ProductEntity> foundEntities = productRepository.findByProductName("상품4");
-        for (ProductEntity productEntity : foundEntities) {
-            System.out.println(productEntity.toString());
+        List<Product> foundEntities = productRepository.findByName("상품4");
+        for (Product product : foundEntities) {
+            System.out.println(product.toString());
         }
 
-        List<ProductEntity> queryEntities = productRepository.queryByProductName("상품4");
-        for (ProductEntity productEntity : foundEntities) {
-            System.out.println(productEntity.toString());
+        List<Product> queryEntities = productRepository.queryByName("상품4");
+        for (Product product : queryEntities) {
+            System.out.println(product.toString());
         }
     }
 
     @Test
     void existTest() {
-        List<ProductEntity> foundAll = productRepository.findAll();
+        List<Product> foundAll = productRepository.findAll();
         System.out.println("====↓↓ Test Data ↓↓====");
-        for (ProductEntity productEntity : foundAll) {
-            System.out.println(productEntity.toString());
+        for (Product product : foundAll) {
+            System.out.println(product.toString());
         }
         System.out.println("====↑↑ Test Data ↑↑====");
 
-        System.out.println(productRepository.existsByProductName("상품4"));
-        System.out.println(productRepository.existsByProductName("상품2"));
+        System.out.println(productRepository.existsByName("상품4"));
+        System.out.println(productRepository.existsByName("상품2"));
     }
 
     @Test
     void countTest() {
-        List<ProductEntity> foundAll = productRepository.findAll();
+        List<Product> foundAll = productRepository.findAll();
         System.out.println("====↓↓ Test Data ↓↓====");
-        for(ProductEntity productEntity : foundAll){
-            System.out.println(productEntity.toString());
+        for(Product product : foundAll){
+            System.out.println(product.toString());
         }
         System.out.println("====↑↑ Test Data ↑↑====");
 
-        System.out.println(productRepository.countByProductName("상품4"));
+        System.out.println(productRepository.countByName("상품4"));
     }
 
     @Test
@@ -84,8 +84,8 @@ class ProductRepositoryTest {
     void deleteTest() {
         System.out.println("before : " + productRepository.count());
 
-        productRepository.deleteByProductId("1");
-        productRepository.removeByProductId("9");
+        productRepository.deleteByName("상품1");
+        productRepository.removeByName("상품9");
 
         System.out.println("After : " + productRepository.count());
     }
@@ -101,14 +101,14 @@ class ProductRepositoryTest {
         productRepository.save(getProduct("106", 123, 3000, 5000));
         productRepository.save(getProduct("107", 123, 4000, 5000));
 
-        List<ProductEntity> foundEntities = productRepository.findFirst5ByProductName("상품123");
-        for(ProductEntity productEntity : foundEntities){
-            System.out.println(productEntity.toString());
+        List<Product> foundEntities = productRepository.findFirst5ByName("상품123");
+        for(Product product : foundEntities){
+            System.out.println(product.toString());
         }
 
-        List<ProductEntity> foundEntities2 = productRepository.findTop3ByProductName("상품123");
-        for(ProductEntity productEntity : foundEntities2){
-            System.out.println(productEntity.toString());
+        List<Product> foundEntities2 = productRepository.findTop3ByName("상품123");
+        for(Product product : foundEntities2){
+            System.out.println(product.toString());
         }
     }
 
@@ -116,84 +116,84 @@ class ProductRepositoryTest {
 
     @Test
     void isEqualsTest() {
-        List<ProductEntity> foundAll = productRepository.findAll();
+        List<Product> foundAll = productRepository.findAll();
         System.out.println("====↓↓ Test Data ↓↓====");
-        for(ProductEntity productEntity : foundAll){
-            System.out.println(productEntity.toString());
+        for(Product product : foundAll){
+            System.out.println(product.toString());
         }
         System.out.println("====↑↑ Test Data ↑↑====");
 
-        System.out.println(productRepository.findByProductIdIs("1"));
-        System.out.println(productRepository.findByProductIdEquals("1"));
+        System.out.println(productRepository.findByIdIs("1"));
+        System.out.println(productRepository.findByIdEquals("1"));
     }
 
     @Test
     void notTest() {
-        List<ProductEntity> foundAll = productRepository.findAll();
+        List<Product> foundAll = productRepository.findAll();
         System.out.println("====↓↓ Test Data ↓↓====");
-        for(ProductEntity productEntity : foundAll){
-            System.out.println(productEntity.toString());
+        for(Product product : foundAll){
+            System.out.println(product.toString());
         }
         System.out.println("====↑↑ Test Data ↑↑====");
 
-        List<ProductEntity> foundEntities = productRepository.findByProductIdNot("1");
-        for(ProductEntity productEntity : foundEntities){
-            System.out.println(productEntity);
+        List<Product> foundEntities = productRepository.findByIdNot("1");
+        for(Product product : foundEntities){
+            System.out.println(product);
         }
-        System.out.println(productRepository.findByProductIdNot("1"));
-        System.out.println(productRepository.findByProductIdIsNot("1"));
+        System.out.println(productRepository.findByIdNot("1"));
+        System.out.println(productRepository.findByIdIsNot("1"));
     }
 
     @Test
     void nullTest() {
-        List<ProductEntity> foundAll = productRepository.findAll();
+        List<Product> foundAll = productRepository.findAll();
         System.out.println("====↓↓ Test Data ↓↓====");
-        for(ProductEntity productEntity : foundAll){
-            System.out.println(productEntity.toString());
+        for(Product product : foundAll){
+            System.out.println(product.toString());
         }
         System.out.println("====↑↑ Test Data ↑↑====");
 
-        System.out.println(productRepository.findByProductStockIsNull());
-        System.out.println(productRepository.findByProductStockIsNotNull());
+        System.out.println(productRepository.findByStockIsNull());
+        System.out.println(productRepository.findByStockIsNotNull());
     }
 
     @Test
     void andTest() {
-        List<ProductEntity> foundAll = productRepository.findAll();
+        List<Product> foundAll = productRepository.findAll();
         System.out.println("====↓↓ Test Data ↓↓====");
-        for(ProductEntity productEntity : foundAll){
-            System.out.println(productEntity.toString());
+        for(Product product : foundAll){
+            System.out.println(product.toString());
         }
         System.out.println("====↑↑ Test Data ↑↑====");
 
-        System.out.println(productRepository.findTopByProductIdAndProductName("1", "상품1"));
+        System.out.println(productRepository.findTopByIdAndName("1", "상품1"));
     }
 
     @Test
     void greaterTest() {
-        List<ProductEntity> foundAll = productRepository.findAll();
+        List<Product> foundAll = productRepository.findAll();
         System.out.println("====↓↓ Test Data ↓↓====");
-        for(ProductEntity productEntity : foundAll){
-            System.out.println(productEntity.toString());
+        for(Product product : foundAll){
+            System.out.println(product.toString());
         }
         System.out.println("====↑↑ Test Data ↑↑====");
 
-        List<ProductEntity> productEntities = productRepository.findByProductPriceGreaterThan(5000);
+        List<Product> productEntities = productRepository.findByPriceGreaterThan(5000);
 
-        for(ProductEntity productEntity : productEntities){
-            System.out.println(productEntity);
+        for(Product product : productEntities){
+            System.out.println(product);
         }
     }
 
     @Test
     void containTest() {
-        List<ProductEntity> foundAll = productRepository.findAll();
+        List<Product> foundAll = productRepository.findAll();
         System.out.println("====↓↓ Test Data ↓↓====");
-        for(ProductEntity productEntity : foundAll){
-            System.out.println(productEntity.toString());
+        for(Product product : foundAll){
+            System.out.println(product.toString());
         }
         System.out.println("====↑↑ Test Data ↑↑====");
 
-        System.out.println(productRepository.findByProductNameContaining("상품1"));
+        System.out.println(productRepository.findByNameContaining("상품1"));
     }
 }

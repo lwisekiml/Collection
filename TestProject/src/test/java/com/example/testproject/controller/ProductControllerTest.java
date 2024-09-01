@@ -62,8 +62,8 @@ class ProductControllerTest {
         given(productService.saveProduct("15871", "pen", 5000, 2000)).willReturn(
                 new ProductDto("15871", "pen", 5000, 2000));
 
-        ProductDto productDto = ProductDto.builder().productId("15871").productName("pen")
-                .productPrice(5000).productStock(2000).build();
+        ProductDto productDto = ProductDto.builder().id("15871").name("pen")
+                .price(5000).stock(2000).build();
         Gson gson = new Gson();
         String content = gson.toJson(productDto);
 

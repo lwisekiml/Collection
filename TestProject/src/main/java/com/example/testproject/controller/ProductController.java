@@ -1,6 +1,5 @@
 package com.example.testproject.controller;
 
-import com.example.testproject.common.Constants;
 import com.example.testproject.common.Constants.ExceptionClass;
 import com.example.testproject.common.exception.TestHubException;
 import com.example.testproject.data.dto.ProductDto;
@@ -30,7 +29,7 @@ public class ProductController {
         ProductDto productDto = productService.getProduct(productId);
 
         LOGGER.info("[ProductController] Response :: productId = {}, productName = {}, productPrice = {}, productStock = {}, Response Time = {}ms",
-                productDto.getProductId(), productDto.getProductName(), productDto.getProductPrice(), productDto.getProductStock(), (System.currentTimeMillis() - startTime));
+                productDto.getId(), productDto.getName(), productDto.getPrice(), productDto.getStock(), (System.currentTimeMillis() - startTime));
         return productDto;
     }
 
@@ -39,20 +38,20 @@ public class ProductController {
     public ResponseEntity<ProductDto> createProduct(@Valid @RequestBody ProductDto productDto) {
 
         // Validation Code Example
-        if (productDto.getProductId().equals("") || productDto.getProductId().isEmpty()) {
+        if (productDto.getId().equals("") || productDto.getId().isEmpty()) {
             LOGGER.error("[createProduct] failed Response :: productId is Empty");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(productDto);
         }
 
-        String productId = productDto.getProductId();
-        String productName = productDto.getProductName();
-        int productPrice = productDto.getProductPrice();
-        int productStock = productDto.getProductStock();
+        String productId = productDto.getId();
+        String productName = productDto.getName();
+        int productPrice = productDto.getPrice();
+        int productStock = productDto.getStock();
 
         ProductDto response = productService.saveProduct(productId, productName, productPrice, productStock);
 
         LOGGER.info("[createProduct] Response >> productId : {}, productName : {}, productPrice : {}, productStock : {}",
-                response.getProductId(), response.getProductName(), response.getProductPrice(), response.getProductStock());
+                response.getId(), response.getName(), response.getPrice(), response.getStock());
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

@@ -1,6 +1,6 @@
 package com.example.testproject.data.dto;
 
-import com.example.testproject.data.entity.ProductEntity;
+import com.example.testproject.data.entity.Product;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -13,27 +13,27 @@ import lombok.*;
 @Builder
 public class ProductDto {
     @NotNull
-    private String productId;
+    private String id;
 
     @NotNull
-    private String productName;
+    private String name;
 
     @NotNull
     @Min(value = 500)
     @Max(value = 300000)
-    private int productPrice;
+    private int price;
 
     @NotNull
     @Min(value = 0)
     @Max(value = 9999)
-    private int productStock;
+    private int stock;
 
-    public ProductEntity toEntity(){
-        return ProductEntity.builder()
-                .productId(productId)
-                .productName(productName)
-                .productPrice(productPrice)
-                .productStock(productStock)
+    public Product toEntity(){
+        return Product.builder()
+                .id(id)
+                .name(name)
+                .price(price)
+                .stock(stock)
                 .build();
     }
 }

@@ -1,14 +1,14 @@
 package com.example.testproject.service;
 
-import com.example.testproject.data.entity.ListenerEntity;
+import com.example.testproject.data.entity.Listener;
 
 public interface ListenerService {
 
-    ListenerEntity getEntity(Long id);
+    Listener getEntity(Long id);
 
-    void saveEntity(ListenerEntity listenerEntity);
+    void saveEntity(Listener listener);
 
-    void updateEntity(ListenerEntity listenerEntity);
+    void updateEntity(Listener listener);
 
-    void removeEntity(ListenerEntity listenerEntity);
+    void removeEntity(Listener listener);
 }

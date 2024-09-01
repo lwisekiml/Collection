@@ -1,8 +1,8 @@
 package com.example.testproject.data.dao;
 
-import com.example.testproject.data.entity.ProductEntity;
+import com.example.testproject.data.entity.Product;
 
 public interface ProductDAO {
-    ProductEntity saveProduct(ProductEntity productEntity);
-    ProductEntity getProduct(String productId);
+    Product saveProduct(Product product);
+    Product getProduct(String productId);
 }
