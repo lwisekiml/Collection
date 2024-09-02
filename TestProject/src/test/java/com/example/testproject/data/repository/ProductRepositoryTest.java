@@ -286,4 +286,94 @@ class ProductRepositoryTest {
             System.out.println(product);
         }
     }
+
+    @Test
+    public void queryTest() {
+        List<Product> foundAll = productRepository.findAll();
+        System.out.println("====↓↓ Test Data ↓↓====");
+        for (Product product : foundAll) {
+            System.out.println(product.toString());
+        }
+        System.out.println("====↑↑ Test Data ↑↑====");
+
+        List<Product> foundProducts = productRepository.findByPriceBasis();
+        for (Product product : foundProducts) {
+            System.out.println(product);
+        }
+    }
+
+    @Test
+    public void nativeQueryTest() {
+        List<Product> foundAll = productRepository.findAll();
+        System.out.println("====↓↓ Test Data ↓↓====");
+        for (Product product : foundAll) {
+            System.out.println(product.toString());
+        }
+        System.out.println("====↑↑ Test Data ↑↑====");
+
+        List<Product> foundProducts = productRepository.findByPriceBasisNativeQuery();
+        for (Product product : foundProducts) {
+            System.out.println(product);
+        }
+    }
+
+    @Test
+    public void parameterQueryTest() {
+        List<Product> foundAll = productRepository.findAll();
+        System.out.println("====↓↓ Test Data ↓↓====");
+        for (Product product : foundAll) {
+            System.out.println(product.toString());
+        }
+        System.out.println("====↑↑ Test Data ↑↑====");
+
+        List<Product> foundProducts = productRepository.findByPriceWithParameter(2000);
+        for (Product product : foundProducts) {
+            System.out.println(product);
+        }
+    }
+
+    @Test
+    public void parameterNamingQueryTest() {
+        List<Product> foundAll = productRepository.findAll();
+        System.out.println("====↓↓ Test Data ↓↓====");
+        for (Product product : foundAll) {
+            System.out.println(product.toString());
+        }
+        System.out.println("====↑↑ Test Data ↑↑====");
+
+        List<Product> foundProducts = productRepository.findByPriceWithParameterNaming(2000);
+        for (Product product : foundProducts) {
+            System.out.println(product);
+        }
+    }
+
+    @Test
+    public void parameterNamingQueryTest2() {
+        List<Product> foundAll = productRepository.findAll();
+        System.out.println("====↓↓ Test Data ↓↓====");
+        for (Product product : foundAll) {
+            System.out.println(product.toString());
+        }
+        System.out.println("====↑↑ Test Data ↑↑====");
+
+        List<Product> foundProducts = productRepository.findByPriceWithParameterNaming2(2000);
+        for (Product product : foundProducts) {
+            System.out.println(product);
+        }
+    }
+
+    @Test
+    public void nativeQueryPagingTest() {
+        List<Product> foundAll = productRepository.findAll();
+        System.out.println("====↓↓ Test Data ↓↓====");
+        for (Product product : foundAll) {
+            System.out.println(product.toString());
+        }
+        System.out.println("====↑↑ Test Data ↑↑====");
+
+        List<Product> foundProducts = productRepository.findByPriceWithParameterPaging(2000, PageRequest.of(2, 2));
+        for (Product product : foundProducts) {
+            System.out.println(product);
+        }
+    }
 }

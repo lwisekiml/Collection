@@ -694,3 +694,23 @@ PageRequest의 of 메소드는 아래와 같이 설명할 수 있다.
 | of(int page, int size, Sort)                             |페이지 번호, 페이지당 데이터 개수, 정렬|sort에 의해 정렬|
 | of(int page, int size, Direction, String ... properites) |페이지 번호, 페이지당 데이터 개수, (enum) 정렬 방향, 컬럼|Sort.by(direction, properties)에 의해 정렬|
 
+---
+
+### @Query 어노테이션
+- Spring Data JPA에서 제공하는 기능으로 JPQL을 사용하여 쿼리를 작성하는 방법
+- JPQL은 엔티티 객체를 대상으로 쿼리를 수행
+
+### 문법 - 기본 쿼리 작성방법(메소드명은 어떻게 작성하든 상관없다.)
+- 직접 쿼리를 사용하는 방법  
+![직접쿼리사용.PNG](document/Query/직접쿼리사용.PNG)
+
+- DB의 Native Query를 사용하는 방법
+  ![Native_Query.PNG](document/Query/Native_Query.PNG)
+
+- 파라미터를 쿼리에 주입하는 방법  
+  ![parameter를쿼리에주입.PNG](document/Query/parameter를쿼리에주입.PNG)
+
+- parameter 방식으로 주입하는 방법
+  ![parameter방식으로주입.PNG](document/Query/parameter방식으로주입.PNG)
+
+참고 : https://docs.spring.io/spring-data/jpa/docs/current-SNAPSHOT/reference/html/#jpa.query-methods.at-query
