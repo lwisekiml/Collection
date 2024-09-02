@@ -662,3 +662,35 @@ Hibernate 관련 spring 설정
 - SQL 문으로 가공될 때 Containing 키워드는 양 끝, StartingWith는 앞, EndingWith은 뒤에 %가 포함됨
 - Like 키워드는 %를 명시적으로 기입해줘야 함
 
+---
+
+### 쿼리문에서의 정렬
+- 일반적으로 정렬을 사용하기 위해서 'ORDER BY' 구문 사용
+- 특정 컬럼을 기준으로 오름차순 또는 내림차순으로 정렬된 레코드 목록을 응답 받음
+
+### 쿼리 메소드에서 정렬 처리
+- 메소드 이름으로 정렬 처리 설정 가능
+  - Asc : 오름차순
+  - Desc : 내림차순
+  - ex) findByNameOrderByStockAsc
+- 여러 정렬 기준을 사용하고 싶다면 이어 붙이는 것으로 설정 가능  
+ex) findByNameOrderByStockAscPriceDesc
+
+### 매개 변수를 활용한 정렬 처리
+- 메소드 이름에 정렬 키워드를 넣는 방법이 아닌 Sort 객체를 활요하여 정렬 기준으로 설정할 수 있음   
+ex) findByName(String name, Sort sort)
+- findByName("pen", Sort.by(Order.asc("price")));
+
+### 매개 변수를 활용한 페이징 처리
+- 페이징 처리를 하면 리턴 타입으로 Page를 설정하고 매개변수로 Pageable 객체를 사용  
+ex) findByName(String name, Pageable pageable);
+- findByName("공책", PageRequest.of(0,2));  
+
+PageRequest의 of 메소드는 아래와 같이 설명할 수 있다.
+
+| of 메소드                                                   |매개변수 설명|비고|
+|----------------------------------------------------------|---|---|
+| of(int page, int size)                                   |페이지 번호(zero-based), 페이지당 데이터 개수|정렬x|
+| of(int page, int size, Sort)                             |페이지 번호, 페이지당 데이터 개수, 정렬|sort에 의해 정렬|
+| of(int page, int size, Direction, String ... properites) |페이지 번호, 페이지당 데이터 개수, (enum) 정렬 방향, 컬럼|Sort.by(direction, properties)에 의해 정렬|
+
