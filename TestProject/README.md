@@ -710,7 +710,51 @@ PageRequest의 of 메소드는 아래와 같이 설명할 수 있다.
 - 파라미터를 쿼리에 주입하는 방법  
   ![parameter를쿼리에주입.PNG](document/Query/parameter를쿼리에주입.PNG)
 
-- parameter 방식으로 주입하는 방법
+- parameter 방식으로 주입하는 방법  
   ![parameter방식으로주입.PNG](document/Query/parameter방식으로주입.PNG)
 
 참고 : https://docs.spring.io/spring-data/jpa/docs/current-SNAPSHOT/reference/html/#jpa.query-methods.at-query
+
+---
+
+### Jasypt
+- 개발자가 암호화 작동 방식에 대한 깊은 지식 없이도 최소한의 노력으로 자신의 프로젝트에 기본 암호화 기능을 추가할 수 있도록 하는 Java 라이브러리
+- 특징
+  - 간편하게 단방향 및 양방샹 암호화 기술 제공
+  - 스레드로부터 안전함
+    - 스프링 같은 싱글톤 환경에서 동기화 걱정없이 사용할 수 있음
+  - 원본 문자 집합에 대한 제약없이 사용 가능함(일본어, 한국어 등의 언어 지원)
+
+### Jasypt 사용법
+1. 라이브러리 추가
+2. Configuration 클래스 생성
+3. 속성값 암호화  
+www.devglan.com/online-tools/jasypt-online-encryption-decryption  
+위 사이트 사용 또는 아래 코드 사용
+```
+void encryptTest(){
+  String id = "root";
+  String password = "djfkdnsemgjqm";
+  
+  System.out.println(jasyptEncoding(id));
+  System.out.println(jasyptEncoding(password));
+}
+
+public String jasyptEncoding(String value) {
+    String key = "around_hub_studio";
+    StandardPBEStringEncryptor pbeEnc = new StandardPBEStringEncryptor();
+    pbeEnc.setAlgorithm("PBEWithMD5AndDES");
+    pbeEnc.setPassword(key);
+    return pbeEnc.encrypt(value);
+}
+```
+
+4. application.properties에 암호화된 속성값 넣고 Bean 등록  
+아래와 같이 함호화된 값은 ENC()를 기입하여 입력
+![application_properties.PNG](document/Jasypt/application_properties.PNG)
+
+5. ENC() 암호화 인식 동작 확인
+
+### 공식 페이지
+www.jasypt.org  
+https://github.com/ulisesbocchio/jasypt-spring-boot#use-you-own-custom-encryptor
