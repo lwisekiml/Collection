@@ -1,4 +1,7 @@
 spring:
+  profiles:
+    active: dev
+
   datasource:
 #    username: root
 #    password: 1234
@@ -18,6 +21,10 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+testproject:
+  loading:
+    message: "## local 환경으로 실행되었습니다 ##"
 
 # 프로퍼티 암호화
 jasypt:

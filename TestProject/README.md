@@ -1,5 +1,5 @@
 ### 스프링 부트(Spring Boot) 기초 강의
-https://www.youtube.com/watch?v=7t6tQ4KV37g
+https://www.youtube.com/watch?v=7t6tQ4KV37g  
 https://www.youtube.com/watch?v=1Jc-SD9YrV4
 
 ---
@@ -758,3 +758,28 @@ public String jasyptEncoding(String value) {
 ### 공식 페이지
 www.jasypt.org  
 https://github.com/ulisesbocchio/jasypt-spring-boot#use-you-own-custom-encryptor
+
+---
+
+### 프로파일
+- 스프링 부트에서는 서버의 환경에 맞춰 애플리케이션의 설정을 다르게 설정할 수 있는 '프로파일' 기능 제공
+- 프로파일을 통해 다음과 같은 설정 가능
+  - 특정 환경에서 실행할 Bean 설정
+  - 특정 환경에서 사용할 프로퍼티 파일 설정
+
+### @Profile
+- 특정 환경에서 실행할 Bean을 설정하기 위해서는 @Profile 사용
+> @Profile("dev")  
+> - 'dev' 환경에서 실행하겠다는 의미
+
+- 연산자를 통한 표현도 가능
+> @Profile("!dev")
+> - 'dev' 환경에서는 실행하지 않겠다는 의미
+
+- @Profile과 같은 곳에서 사용되는 환경의 선언은 대체로 JVM 시스템 변수로 전달함
+> -Dspring.profiles.active=dev
+> 
+> ![profile_system_value.PNG](document/profile/profile_system_value.PNG)
+
+- 2.4버전 이후부터는 application.properties 파일에서 프로파일 별 속성을 구분하여 지정 가능
+>![application_properties.PNG](document/profile/application_properties.PNG)
