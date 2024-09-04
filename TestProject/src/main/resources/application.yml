@@ -1,6 +1,8 @@
 spring:
+  # 다음과 같이 하거나 profiles: active : 부분을 지우고
+  # Edit Configurations... -> Active Profiles 부분에 local, dev, prod를 입력해 적용해도 된다.
   profiles:
-    active: dev
+    active: local
 
   datasource:
 #    username: root
@@ -22,11 +24,42 @@ spring:
       hibernate:
         format_sql: true
 
+jasypt: # 프로퍼티 암호화
+  encryptor:
+    bean: jasyptStringEncryptor # JasyptConfig에서 @Bean의 name 값
+
 testproject:
   loading:
     message: "## local 환경으로 실행되었습니다 ##"
 
-# 프로퍼티 암호화
-jasypt:
-  encryptor:
-    bean: jasyptStringEncryptor # JasyptConfig에서 @Bean의 name 값
+---
+
+spring:
+  config:
+    activate:
+      on-profile: local
+testproject:
+  loading:
+    message: "local 환경으로 실행되었습니다."
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+testproject:
+  loading:
+    message: "dev 환경으로 실행되었습니다."
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+testproject:
+  loading:
+    message: "prod 환경으로 실행되었습니다."
+
+
