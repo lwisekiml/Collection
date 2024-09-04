@@ -783,3 +783,48 @@ https://github.com/ulisesbocchio/jasypt-spring-boot#use-you-own-custom-encryptor
 
 - 2.4버전 이후부터는 application.properties 파일에서 프로파일 별 속성을 구분하여 지정 가능
 >![application_properties.PNG](document/profile/application_properties.PNG)
+
+---
+
+### 인터셉터
+- DispatcherServlet와 Controller 사이에서 request를 가로채는 역할 수행
+- 기존의 로직으로 수정하지 않고 비즈니스 로직 전후에서 특정 기능르 수행할 수 있음
+- 구현을 위해 HandlerInterceptor 사용
+
+### HandlerInterceptor 구조
+![interceptor_flow.PNG](document/interceptor/interceptor_flow.PNG)
+
+- HandlerInterceptor 인터페이스
+![HandlerInterceptor_interface.PNG](document/interceptor/HandlerInterceptor_interface.PNG)
+
+- preHandle  
+  - Controller로 요청이 가기전 수행  
+  - return 값이 true일 경우 Controller로 요청을 전달하고 false일 경우 Controller로 전달하지 않음  
+  - Object handler : 요청을 전달할 Controller 객체가 담겨있음
+
+- postHandle  
+  - Controller의 로직이 수행된 이후 View가 렌더링 되기 전에 수행
+
+- afterCompletion  
+  - View가 렌더링 된 후 실행
+
+### HttpServletRequest와 HttpServletResponse
+- WAS가 요청을 받으면 HttpServletRequest와 HttpServletResponse 객체를 생성하여 웹 애플리케이션으로 전달
+- HttpServletRequest
+  - Http 프로토콜의 Request 정보를 서블릿으로 전달하기 위해 사용되는 객체
+  - Header, Parameter, Cookie, URL, URI 등의 정보를 가짐
+  - Body의 값을 읽기 위한 메소드를 가짐
+
+- HttpServletResponse
+  - 요청에 대한 응답값을 담기 위한 객체
+  - Content-Type이나 응답 코드, 메시지를 가짐
+
+### 인터셉터 구형
+- WebMvcConfig 구현체 작성
+![WebMvcConfig.PNG](document/interceptor/WebMvcConfig.PNG)
+- addPathPatterns : 해당 인터셉터가 동작할 경로 설정
+- excludePathPatterns : 설정된 경로는 인터셉터 예외 설정
+
+---
+
+### 캐시(edis/docker) : https://www.youtube.com/watch?v=1Jc-SD9YrV4&t=12959s
