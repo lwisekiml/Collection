@@ -1,7 +1,14 @@
 spring:
+  # 다음과 같이 하거나 profiles: active : 부분을 지우고
+  # Edit Configurations... -> Active Profiles 부분에 local, dev, prod를 입력해 적용해도 된다.
+  profiles:
+    active: local
+
   datasource:
-    username: root
-    password: 1234
+#    username: root
+#    password: 1234
+    username: ENC(BIuilFa77ycceyCO8rzVWw==) # encryptTest() 결과값 또는 READEME.md에 있는 사이트 이용
+    password: ENC(UOqzJsJkuXW9008pkF70Dg==) # encryptTest() 결과값 또는 READEME.md에 있는 사이트 이용
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/testproject?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
 
@@ -11,5 +18,48 @@ spring:
       # create-drop : create와 동일하지만, SessionFactory가 내려가면 해당 테이블을 drop시킨다.
       # update : SessionFactory가 올라갈 때 Object를 검사하여 테이블을 alter 시킨다. 데이터는 유지됨.
       # validate : update처럼 Object를 검사하지만, 스키마는 아무것도 건드리지 않고, Object와 스키마의 정보가 다르다면 에러를 발생시킨다.
-      ddl-auto: update
-    show-sql: false
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+jasypt: # 프로퍼티 암호화
+  encryptor:
+    bean: jasyptStringEncryptor # JasyptConfig에서 @Bean의 name 값
+
+testproject:
+  loading:
+    message: "## local 환경으로 실행되었습니다 ##"
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: local
+testproject:
+  loading:
+    message: "local 환경으로 실행되었습니다."
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+testproject:
+  loading:
+    message: "dev 환경으로 실행되었습니다."
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+testproject:
+  loading:
+    message: "prod 환경으로 실행되었습니다."
+
+

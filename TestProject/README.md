@@ -1,5 +1,6 @@
 ### 스프링 부트(Spring Boot) 기초 강의
-https://www.youtube.com/watch?v=7t6tQ4KV37g
+https://www.youtube.com/watch?v=7t6tQ4KV37g  
+https://www.youtube.com/watch?v=1Jc-SD9YrV4
 
 ---
 
@@ -571,3 +572,259 @@ Hibernate 관련 spring 설정
 - spring-boot-starter-security : 스프링 시큐리티(인증, 권한)
 - spring-boot-starter-data-jpa : Spring Data JPA(Hibernate)
 - spring-boot-starter-data-cache : 캐시
+
+---
+
+### @MappedSuperclass
+- 여러 엔티티 객체에서 사용되는 공통 속성은 대표적으로 id, createdAt, updatedAt 이 있다.
+- 공통되는 속성을 별도의 클래스로 구분하여 @MappedSuperclass를 선언 후 사용
+- 코드 상 분리, DB의 테이블 개념에서는 분리되어 있지 않음
+
+![MappedSuperclass.PNG](document/JPA/MappedSuperclass.PNG)
+
+### Auditing
+- JPA에서의 Auditing은 각 엔티티 별로 누가, 언제 접근했는지 기록하여 감시 체계를 꾸리는 것을 의미
+- Spring Data JPA에서 이 기능을 사용하기 위해서는 @EnableJpaAuditing 사용
+
+### @EntityLitener
+- 엔티티 객체를 DB에 적용하기 전/후에 콜백을 요청하는 어노테이션
+- @EntityLitener의 파라미터로 콜백을 요청할 클래스를 지엉하여 사용
+- @EntityLitener의 요청 시점은 다음과 같다.
+
+|EntityListener|설명|
+|---|---|
+|@PostLoad|Select 실행 직후|
+|@PrePersist|Persist(Insert)|
+|@PostPersist|Persist(Insert)|
+|@PreUpdate|Merge(Update)|
+|@PostUpdate|Merge(Update)|
+|@PreRemove|Remove(Delete)|
+|@PostRemove|Remove(Delete)|
+
+### JPA Auditing Annotation
+- @CreatedDate : 엔티티가 저장되는 시점에 자동으로 시간 주입
+- @CreatedBy : 엔티티가 저장되는 시점에 저장 주체가 누구인지 주입
+- @LastModifiedDate : 엔티티가 수정되는 시점에 자동으로 시간 주입
+- @LastModifiedBy : 엔티티가 수정되는 시점에 수정 주체가 누군인지 주입
+
+---
+
+### JPQL (Java Persistence Query Language)
+- 테이블이 아닌 엔티티 객체를 대상으로 사용되는 객체지향 쿼리
+- JPA는 JPQL을 분석한 후 연동되어 있는 DB에 맞는 SQL로 가공하여 사용
+
+### 쿼리 메소드
+- Spring Data JPA의 핵심 기능
+- Repository 내 정의되는 메소드의 이름만으로 쿼리를 생성할 수 있음
+- 이름 짓는 것에는 특별한 규칙이 존재(네이밍 컨벤션)하면, 규칙에 맞게 이름을 지으면 그에 맞는 쿼리가 자동 생성됨
+
+### 쿼리 메소드 문법
+- 뭐리 메소드는 크게 주제(Subject)와 서술어(Predicate)로 구분
+- 'find...by', 'exists...by'와 같은 키워드로 주제를 정하며 by는 서술어의 시작을 나타냄
+- 서술어 영역은 검색 및 조건을 작성
+
+### 쿼리 메소드의 주제 키워드
+>find...by, read...by, get...by, query...by 등
+- 조회 기능을 수행하는 키워드
+- '...'의 영역은 엔티티를 표현할 수 있으나 Repository에서 이미 엔티티를 정의하고 있기 때문에 생략하는 경우가 있음
+- return 타입 : Collection이나 Streamable에 속하는 타입을 설정할 수 있음
+>exists...by
+- 특정 데이터가 존재하는지 확인
+- return 타입 : boolean
+>count...by
+- 조회 쿼리를 수행한 후 결과 개수를 리턴하는 키워드
+- return 타입 : long
+>delete...by, remove...by
+- 삭제 쿼리를 수행
+- return 타입 : 없거나 삭제한 횟수를 return
+>First<number>..., ...Top<number>...
+- 쿼리를 통해 조회되는 결과값의 수를 제한하는 키워드
+- 일반적으로 여러 건을 조회하기 위해 사용되지만 단 건으로 조회할 경우 <number> 부분을 생략하면 된다.
+
+### 쿼리 메소드의 조건자 키워드
+>Is
+- 값을 일치를 위한 조건자 키워드
+- Equals 키워드와 통일한 기능 수행
+>(Is)Not
+- 값의 불일치를 위한 조건자 키워드
+- Is는 생략하고 Not 키워드만 사용할 수 있음
+>(Is)Null, (Is)NotNull
+- 해당 컬럼의 레코드의 값이 Null인지 아닌지 체크하는 키워드
+>(Is)True, (Is)False
+- boolean 타입으로 지정되어 있는 컬럼의 값을 확인하는 키워드
+>And, Or
+- 여러 조건을 묶을 때 사용
+>(Is)GreaterThan, (Is)LessThan, (Is)Between
+- 숫자나 DateTime 컬럼에서 사용할 수 있는 비교 연산 키워드
+- 경계값을 포함하기 위해서는 Equal 키워드를 추가해야 함
+>(Is)StartingWith(==StartWith), (Is)EndingWith(==EndingWith), (Is)Containing(==Containing), (Is)Like
+- 컬럼의 값에서 값이 일부 일치하는지 확인하는 키워드
+- SQL 문으로 가공될 때 Containing 키워드는 양 끝, StartingWith는 앞, EndingWith은 뒤에 %가 포함됨
+- Like 키워드는 %를 명시적으로 기입해줘야 함
+
+---
+
+### 쿼리문에서의 정렬
+- 일반적으로 정렬을 사용하기 위해서 'ORDER BY' 구문 사용
+- 특정 컬럼을 기준으로 오름차순 또는 내림차순으로 정렬된 레코드 목록을 응답 받음
+
+### 쿼리 메소드에서 정렬 처리
+- 메소드 이름으로 정렬 처리 설정 가능
+  - Asc : 오름차순
+  - Desc : 내림차순
+  - ex) findByNameOrderByStockAsc
+- 여러 정렬 기준을 사용하고 싶다면 이어 붙이는 것으로 설정 가능  
+ex) findByNameOrderByStockAscPriceDesc
+
+### 매개 변수를 활용한 정렬 처리
+- 메소드 이름에 정렬 키워드를 넣는 방법이 아닌 Sort 객체를 활요하여 정렬 기준으로 설정할 수 있음   
+ex) findByName(String name, Sort sort)
+- findByName("pen", Sort.by(Order.asc("price")));
+
+### 매개 변수를 활용한 페이징 처리
+- 페이징 처리를 하면 리턴 타입으로 Page를 설정하고 매개변수로 Pageable 객체를 사용  
+ex) findByName(String name, Pageable pageable);
+- findByName("공책", PageRequest.of(0,2));  
+
+PageRequest의 of 메소드는 아래와 같이 설명할 수 있다.
+
+| of 메소드                                                   |매개변수 설명|비고|
+|----------------------------------------------------------|---|---|
+| of(int page, int size)                                   |페이지 번호(zero-based), 페이지당 데이터 개수|정렬x|
+| of(int page, int size, Sort)                             |페이지 번호, 페이지당 데이터 개수, 정렬|sort에 의해 정렬|
+| of(int page, int size, Direction, String ... properites) |페이지 번호, 페이지당 데이터 개수, (enum) 정렬 방향, 컬럼|Sort.by(direction, properties)에 의해 정렬|
+
+---
+
+### @Query 어노테이션
+- Spring Data JPA에서 제공하는 기능으로 JPQL을 사용하여 쿼리를 작성하는 방법
+- JPQL은 엔티티 객체를 대상으로 쿼리를 수행
+
+### 문법 - 기본 쿼리 작성방법(메소드명은 어떻게 작성하든 상관없다.)
+- 직접 쿼리를 사용하는 방법  
+![직접쿼리사용.PNG](document/Query/직접쿼리사용.PNG)
+
+- DB의 Native Query를 사용하는 방법
+  ![Native_Query.PNG](document/Query/Native_Query.PNG)
+
+- 파라미터를 쿼리에 주입하는 방법  
+  ![parameter를쿼리에주입.PNG](document/Query/parameter를쿼리에주입.PNG)
+
+- parameter 방식으로 주입하는 방법  
+  ![parameter방식으로주입.PNG](document/Query/parameter방식으로주입.PNG)
+
+참고 : https://docs.spring.io/spring-data/jpa/docs/current-SNAPSHOT/reference/html/#jpa.query-methods.at-query
+
+---
+
+### Jasypt
+- 개발자가 암호화 작동 방식에 대한 깊은 지식 없이도 최소한의 노력으로 자신의 프로젝트에 기본 암호화 기능을 추가할 수 있도록 하는 Java 라이브러리
+- 특징
+  - 간편하게 단방향 및 양방샹 암호화 기술 제공
+  - 스레드로부터 안전함
+    - 스프링 같은 싱글톤 환경에서 동기화 걱정없이 사용할 수 있음
+  - 원본 문자 집합에 대한 제약없이 사용 가능함(일본어, 한국어 등의 언어 지원)
+
+### Jasypt 사용법
+1. 라이브러리 추가
+2. Configuration 클래스 생성
+3. 속성값 암호화  
+www.devglan.com/online-tools/jasypt-online-encryption-decryption  
+위 사이트 사용 또는 아래 코드 사용
+```
+void encryptTest(){
+  String id = "root";
+  String password = "djfkdnsemgjqm";
+  
+  System.out.println(jasyptEncoding(id));
+  System.out.println(jasyptEncoding(password));
+}
+
+public String jasyptEncoding(String value) {
+    String key = "around_hub_studio";
+    StandardPBEStringEncryptor pbeEnc = new StandardPBEStringEncryptor();
+    pbeEnc.setAlgorithm("PBEWithMD5AndDES");
+    pbeEnc.setPassword(key);
+    return pbeEnc.encrypt(value);
+}
+```
+
+4. application.properties에 암호화된 속성값 넣고 Bean 등록  
+아래와 같이 함호화된 값은 ENC()를 기입하여 입력
+![application_properties.PNG](document/Jasypt/application_properties.PNG)
+
+5. ENC() 암호화 인식 동작 확인
+
+### 공식 페이지
+www.jasypt.org  
+https://github.com/ulisesbocchio/jasypt-spring-boot#use-you-own-custom-encryptor
+
+---
+
+### 프로파일
+- 스프링 부트에서는 서버의 환경에 맞춰 애플리케이션의 설정을 다르게 설정할 수 있는 '프로파일' 기능 제공
+- 프로파일을 통해 다음과 같은 설정 가능
+  - 특정 환경에서 실행할 Bean 설정
+  - 특정 환경에서 사용할 프로퍼티 파일 설정
+
+### @Profile
+- 특정 환경에서 실행할 Bean을 설정하기 위해서는 @Profile 사용
+> @Profile("dev")  
+> - 'dev' 환경에서 실행하겠다는 의미
+
+- 연산자를 통한 표현도 가능
+> @Profile("!dev")
+> - 'dev' 환경에서는 실행하지 않겠다는 의미
+
+- @Profile과 같은 곳에서 사용되는 환경의 선언은 대체로 JVM 시스템 변수로 전달함
+> -Dspring.profiles.active=dev
+> 
+> ![profile_system_value.PNG](document/profile/profile_system_value.PNG)
+
+- 2.4버전 이후부터는 application.properties 파일에서 프로파일 별 속성을 구분하여 지정 가능
+>![application_properties.PNG](document/profile/application_properties.PNG)
+
+---
+
+### 인터셉터
+- DispatcherServlet와 Controller 사이에서 request를 가로채는 역할 수행
+- 기존의 로직으로 수정하지 않고 비즈니스 로직 전후에서 특정 기능르 수행할 수 있음
+- 구현을 위해 HandlerInterceptor 사용
+
+### HandlerInterceptor 구조
+![interceptor_flow.PNG](document/interceptor/interceptor_flow.PNG)
+
+- HandlerInterceptor 인터페이스
+![HandlerInterceptor_interface.PNG](document/interceptor/HandlerInterceptor_interface.PNG)
+
+- preHandle  
+  - Controller로 요청이 가기전 수행  
+  - return 값이 true일 경우 Controller로 요청을 전달하고 false일 경우 Controller로 전달하지 않음  
+  - Object handler : 요청을 전달할 Controller 객체가 담겨있음
+
+- postHandle  
+  - Controller의 로직이 수행된 이후 View가 렌더링 되기 전에 수행
+
+- afterCompletion  
+  - View가 렌더링 된 후 실행
+
+### HttpServletRequest와 HttpServletResponse
+- WAS가 요청을 받으면 HttpServletRequest와 HttpServletResponse 객체를 생성하여 웹 애플리케이션으로 전달
+- HttpServletRequest
+  - Http 프로토콜의 Request 정보를 서블릿으로 전달하기 위해 사용되는 객체
+  - Header, Parameter, Cookie, URL, URI 등의 정보를 가짐
+  - Body의 값을 읽기 위한 메소드를 가짐
+
+- HttpServletResponse
+  - 요청에 대한 응답값을 담기 위한 객체
+  - Content-Type이나 응답 코드, 메시지를 가짐
+
+### 인터셉터 구형
+- WebMvcConfig 구현체 작성
+![WebMvcConfig.PNG](document/interceptor/WebMvcConfig.PNG)
+- addPathPatterns : 해당 인터셉터가 동작할 경로 설정
+- excludePathPatterns : 설정된 경로는 인터셉터 예외 설정
+
+---
+
+### 캐시(edis/docker) : https://www.youtube.com/watch?v=1Jc-SD9YrV4&t=12959s
